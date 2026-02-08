@@ -12,10 +12,16 @@ import {
 import { createKeyPair } from '@auth/domain/entities/key-pair.entity';
 import { AccessTokenPayload, RefreshTokenPayload } from '@auth/domain/functions/create-token.fn';
 
+/**
+ * JWT token service backed by ES256 key pairs stored in the repository.
+ * Supports key rotation: verification tries all non-expired keys so tokens
+ * signed with a previous key remain valid until they expire naturally.
+ */
 export const createJwtTokenService = (
   keyPairRepo: KeyPairRepositoryPort,
   config: AppConfig,
 ): TokenServicePort & { initialize: () => Promise<void> } => {
+  /** Generates an initial ES256 key pair if none exists (idempotent on startup). */
   const initialize = async (): Promise<void> => {
     const activeKey = await keyPairRepo.findActive();
     if (!activeKey) {
@@ -33,6 +39,11 @@ export const createJwtTokenService = (
     }
   };
 
+  /**
+   * Attempts token verification against every non-expired key pair.
+   * Enables seamless key rotation: new keys can be introduced without
+   * immediately invalidating tokens signed by the previous key.
+   */
   const verifyWithAllKeys = async (token: string): Promise<Record<string, unknown>> => {
     const keys = await keyPairRepo.findAllNonExpired();
     for (const key of keys) {

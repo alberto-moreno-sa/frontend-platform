@@ -1,3 +1,8 @@
+/**
+ * Either monad for representing operations that can fail.
+ * Left holds the error value, Right holds the success value.
+ * Use `isLeft`/`isRight` for type narrowing, or `fold` to handle both branches.
+ */
 export interface Left<L> {
   readonly _tag: 'Left';
   readonly value: L;

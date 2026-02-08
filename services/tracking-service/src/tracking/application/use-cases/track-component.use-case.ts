@@ -16,6 +16,11 @@ interface TrackComponentResult {
   readonly timestamp: string;
 }
 
+/**
+ * Validates and publishes a component interaction event to the broker.
+ * Uses the Either pattern for validation: Left = invalid → throw,
+ * Right = valid → create entity and publish asynchronously.
+ */
 export const createTrackComponentUseCase = (deps: TrackComponentDeps) => {
   return async (input: CreateTrackingEventInput): Promise<TrackComponentResult> => {
     const validation = validateTrackingData(input);

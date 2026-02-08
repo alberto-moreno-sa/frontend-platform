@@ -3,7 +3,6 @@ import { validate } from '@common/middleware/validate.middleware';
 import { registerSchema } from '../validation/register.schema';
 import { loginSchema } from '../validation/login.schema';
 import { refreshTokenSchema } from '../validation/refresh-token.schema';
-import { logoutSchema } from '../validation/logout.schema';
 
 import { createDeviceInfo } from '@auth/domain/value-objects/device-info.vo';
 import { AuthenticatedUser } from '@common/types';
@@ -15,7 +14,7 @@ export interface AuthRoutesDeps {
     };
     readonly loginUser: { execute: (email: string, password: string, device: any) => Promise<any> };
     readonly refreshToken: { execute: (refreshToken: string) => Promise<any> };
-    readonly logout: { execute: (user: AuthenticatedUser, refreshToken: string) => Promise<any> };
+    readonly logout: { execute: (user: AuthenticatedUser) => Promise<any> };
     readonly verifyToken: { execute: (token: string) => Promise<any> };
   };
   readonly authMiddleware: (req: Request, res: Response, next: NextFunction) => Promise<void>;
@@ -81,10 +80,9 @@ export const createAuthRoutes = (deps: AuthRoutesDeps): Router => {
   router.post(
     '/logout',
     deps.authMiddleware,
-    validate(logoutSchema),
     async (req: Request, res: Response, next: NextFunction) => {
       try {
-        const result = await deps.useCases.logout.execute(req.user!, req.body.refresh_token);
+        const result = await deps.useCases.logout.execute(req.user!);
         res.json(result);
       } catch (error) {
         next(error);

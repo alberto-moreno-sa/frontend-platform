@@ -10,6 +10,11 @@ interface ConsumeEventsDeps {
   readonly kafkaTopic: string;
 }
 
+/**
+ * Subscribes to the broker topic and processes each incoming tracking event:
+ * persists it to the repository and broadcasts it to all SSE clients.
+ * Errors are logged but don't crash the consumer, ensuring resilience.
+ */
 export const createConsumeEventsUseCase = (deps: ConsumeEventsDeps) => {
   const handleEvent = async (event: TrackingEventEntity): Promise<void> => {
     try {

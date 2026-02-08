@@ -12,6 +12,14 @@ export interface AuthMiddlewareDeps {
   readonly userRepo: UserRepositoryPort;
 }
 
+/**
+ * Multi-step authentication middleware pipeline:
+ * 1. Extract Bearer token from Authorization header
+ * 2. Verify JWT signature against all valid key pairs
+ * 3. Check token blacklist (revoked/logged-out tokens)
+ * 4. Validate user exists and is active
+ * 5. Populate req.user with decoded claims
+ */
 export const createAuthMiddleware =
   (deps: AuthMiddlewareDeps) =>
   async (req: Request, _res: Response, next: NextFunction): Promise<void> => {

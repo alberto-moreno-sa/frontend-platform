@@ -18,5 +18,3 @@ export const registerSchema = z.object({
     .min(2, 'Name must be at least 2 characters')
     .max(100, 'Name must be at most 100 characters'),
 });
-
-export type RegisterInput = z.infer<typeof registerSchema>;

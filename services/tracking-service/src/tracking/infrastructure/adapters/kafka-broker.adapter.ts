@@ -8,6 +8,11 @@ interface KafkaBrokerConfig {
   readonly groupId: string;
 }
 
+/**
+ * Kafka-backed event broker adapter. Uses a single producer/consumer pair
+ * per instance. Subscribes with fromBeginning: false so only new messages
+ * are consumed after deployment (no historical replay).
+ */
 export const createKafkaBrokerAdapter = (config: KafkaBrokerConfig): EventBrokerPort => {
   const kafka = new Kafka({
     clientId: config.clientId,

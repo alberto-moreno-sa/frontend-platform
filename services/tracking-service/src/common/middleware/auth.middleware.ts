@@ -3,6 +3,11 @@ import { createRemoteJWKSet, jwtVerify } from 'jose';
 import { AppError } from '../errors/app-error';
 import { ErrorCodes } from '../constants/error-codes';
 
+/**
+ * Cross-service authentication middleware that verifies JWTs using the
+ * auth-service's remote JWKS endpoint. The JWKS is fetched and cached
+ * automatically by jose, ensuring key rotation is handled transparently.
+ */
 export const createAuthMiddleware = (authServiceUrl: string) => {
   const jwksUrl = new URL('/.well-known/jwks.json', authServiceUrl);
   const JWKS = createRemoteJWKSet(jwksUrl);

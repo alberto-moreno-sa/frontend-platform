@@ -12,12 +12,8 @@ interface LogoutDeps {
 }
 
 export const createLogoutUseCase = (deps: LogoutDeps) => ({
-  async execute(currentUser: AuthenticatedUser, refreshTokenJwt: string) {
-    // Find refresh token by decoding (we just need the jti from stored token)
+  async execute(currentUser: AuthenticatedUser) {
     const storedTokens = await deps.refreshTokenRepo.findActiveByUserId(currentUser.userId);
-    // We need to find the matching refresh token - match by checking stored tokens
-    // Since refresh_token is passed, we search by the JWT content
-    // For simplicity, revoke any active token that matches
 
     // Blacklist the current access token
     await deps.blacklist.add(currentUser.jti, deps.config.accessTokenTtl);

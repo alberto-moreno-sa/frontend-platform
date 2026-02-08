@@ -52,5 +52,3 @@ export const ErrorCodes = {
     message: 'Failed to publish event to message broker',
   },
 } as const;
-
-export type ErrorCode = keyof typeof ErrorCodes;

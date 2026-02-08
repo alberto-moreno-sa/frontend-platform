@@ -22,6 +22,11 @@ interface RegisterUserDeps {
   readonly config: AppConfig;
 }
 
+/**
+ * Registers a new user and bootstraps their first authenticated session.
+ * Checks email uniqueness → hashes password → creates user → signs access/refresh
+ * token pair → persists refresh token → creates session with device metadata.
+ */
 export const createRegisterUserUseCase = (deps: RegisterUserDeps) => ({
   async execute(email: string, password: string, name: string, device: DeviceInfo) {
     console.log(`[RegisterUser] Registering user: ${email}`);

@@ -7,6 +7,12 @@ interface StreamStatsDeps {
   readonly sseEmitter: SSEEmitterPort;
 }
 
+/**
+ * Establishes an SSE connection for real-time stats streaming.
+ * Sets SSE headers and flushes them immediately → sends an initial aggregated
+ * stats snapshot → registers the client for live updates via the SSE emitter →
+ * auto-unregisters on client disconnect.
+ */
 export const createStreamStatsUseCase = (deps: StreamStatsDeps) => {
   return async (res: Response): Promise<void> => {
     // Set SSE headers

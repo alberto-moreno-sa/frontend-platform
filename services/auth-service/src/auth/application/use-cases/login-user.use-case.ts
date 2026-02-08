@@ -23,6 +23,11 @@ interface LoginUserDeps {
   readonly config: AppConfig;
 }
 
+/**
+ * Authenticates a user by email/password and creates a new session.
+ * Validates credentials → checks account is active → updates lastLogin →
+ * signs access/refresh token pair → persists refresh token → creates session.
+ */
 export const createLoginUserUseCase = (deps: LoginUserDeps) => ({
   async execute(email: string, password: string, device: DeviceInfo) {
     console.log(`[LoginUser] Login attempt: ${email}`);

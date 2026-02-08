@@ -19,5 +19,3 @@ export const trackEventSchema = z.object({
   language: z.string().nullish().default(null),
   metadata: z.record(z.unknown()).default({}),
 });
-
-export type TrackEventInput = z.infer<typeof trackEventSchema>;

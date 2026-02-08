@@ -1,105 +1,83 @@
 # Frontend Platform
 
-Monorepo que contiene el frontend, los servicios backend y la librería de componentes compartida de la plataforma.
+Monorepo containing the frontend, backend services, and shared component library.
 
-## Estructura del proyecto
+## Structure
 
 ```
 frontend-platform/
-├── analytics-demo/          # App frontend (React Router + Tailwind)
+├── analytics-demo/          # React app
 ├── services/
-│   ├── auth-service/        # Servicio de autenticación (Express + MongoDB + Redis)
-│   └── tracking-service/    # Servicio de tracking (Express + MongoDB)
+│   ├── auth-service/        # Authentication (Express + MongoDB + Redis)
+│   └── tracking-service/    # Component tracking (Express + MongoDB)
 ├── ui-kit/
 │   └── packages/
-│       ├── react/           # Componentes React + Storybook
-│       ├── styles/          # Design tokens + CSS base
-│       └── utils/           # Utilidades compartidas
-├── docker-compose.yml              # Levanta todo
-├── docker-compose.frontend.yml     # Levanta solo el frontend
-└── docker-compose.backend.yml      # Levanta solo el backend
+│       ├── react/           # React components + Storybook
+│       ├── styles/          # Design tokens + CSS
+│       └── utils/           # Shared utilities
+├── docker-compose.yml              # Full stack
+├── docker-compose.frontend.yml     # Frontend only
+└── docker-compose.backend.yml      # Backend only
 ```
 
-## Puertos
+## Ports
 
-| Servicio         | Puerto |
-|------------------|--------|
-| analytics-demo   | 3000   |
-| auth-service     | 3001   |
-| tracking-service | 3002   |
-| Storybook        | 6006   |
-| Redis            | 6379   |
-| MongoDB (local)  | 27017  |
+| Service          | Port  |
+| ---------------- | ----- |
+| analytics-demo   | 3000  |
+| auth-service     | 3001  |
+| tracking-service | 3002  |
+| Storybook        | 6006  |
+| Redis            | 6379  |
+| MongoDB          | 27017 |
 
-## Levantar con Docker
-
-### Todo el stack
+## Docker
 
 ```bash
+# Full stack
 docker compose up --build
-```
 
-### Solo el frontend
-
-```bash
+# Frontend only
 docker compose -f docker-compose.frontend.yml up --build
-```
 
-### Solo el backend
-
-```bash
+# Backend only
 docker compose -f docker-compose.backend.yml up --build
-```
 
-### Con MongoDB local
-
-Por defecto los servicios se conectan a MongoDB Atlas (configurado en los `.env` de cada servicio). Para usar una instancia local de MongoDB, agregar el profile `local-db`:
-
-```bash
+# With local MongoDB (instead of Atlas)
 docker compose --profile local-db up --build
 ```
 
-## Variables de entorno
-
-Cada servicio maneja su propia configuración en su carpeta:
-
-- `services/auth-service/.env`
-- `services/tracking-service/.env`
-
-Copiar los `.env.example` de cada servicio para crear los `.env` correspondientes.
-
-El archivo `.env.example` en la raíz contiene variables opcionales para personalizar los puertos de mapeo del host.
-
-## Desarrollo local (sin Docker)
-
-### auth-service
+## Local Development
 
 ```bash
+# auth-service
 cd services/auth-service
 npm install
 npm run start:dev
-```
 
-### tracking-service
-
-```bash
+# tracking-service
 cd services/tracking-service
 npm install
 npm run start:dev
-```
 
-### analytics-demo
-
-```bash
+# analytics-demo
 cd analytics-demo
 npm install
 npm run dev
-```
 
-### Storybook (ui-kit)
-
-```bash
+# Storybook
 cd ui-kit/packages/react
 npm install
 npm run storybook
 ```
+
+## Environment Variables
+
+Each service has its own `.env.example`. Copy to `.env` before running:
+
+```bash
+cp services/auth-service/.env.example services/auth-service/.env
+cp services/tracking-service/.env.example services/tracking-service/.env
+```
+
+The root `.env.example` contains optional variables to customize Docker host port mappings.

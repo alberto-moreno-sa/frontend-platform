@@ -51,12 +51,5 @@ export const createRefreshToken = (
   };
 };
 
-export const isTokenRevoked = (token: RefreshTokenEntity): boolean => token.revokedAt !== null;
-
-export const isTokenExpired = (token: RefreshTokenEntity): boolean => token.expiresAt < new Date();
-
-export const isTokenValid = (token: RefreshTokenEntity): boolean =>
-  !isTokenRevoked(token) && !isTokenExpired(token);
-
 export const wasRotated = (token: RefreshTokenEntity): boolean =>
   token.revokedAt !== null && token.revokedReason === 'rotation';

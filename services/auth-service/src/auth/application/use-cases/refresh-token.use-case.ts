@@ -22,6 +22,16 @@ interface RefreshTokenDeps {
   readonly config: AppConfig;
 }
 
+/**
+ * Handles refresh token rotation with token-family theft detection.
+ *
+ * Flow: verify JWT → check reuse (if already rotated, revoke entire family) →
+ * validate expiry and user status → rotate (revoke old + issue new pair) →
+ * update session reference.
+ *
+ * The parentJti chain links each rotated token to its predecessor, enabling
+ * full-family revocation when a stolen token is replayed.
+ */
 export const createRefreshTokenUseCase = (deps: RefreshTokenDeps) => ({
   async execute(refreshTokenJwt: string) {
     const payload = await deps.tokenService.verifyRefreshToken(refreshTokenJwt);

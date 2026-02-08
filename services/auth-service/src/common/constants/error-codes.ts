@@ -73,5 +73,3 @@ export const ErrorCodes = {
     message: 'Cryptographic operation failed',
   },
 } as const;
-
-export type ErrorCode = keyof typeof ErrorCodes;

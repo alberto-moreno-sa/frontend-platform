@@ -33,5 +33,3 @@ export const createKeyPair = (input: CreateKeyPairInput): Omit<KeyPairEntity, 'i
   createdAt: new Date(),
   rotatedAt: null,
 });
-
-export const isActiveKey = (keyPair: KeyPairEntity): boolean => keyPair.status === 'active';
