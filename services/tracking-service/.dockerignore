@@ -1,0 +1,15 @@
+node_modules
+dist
+.git
+.gitignore
+.env
+.env.*
+*.md
+.idea
+.vscode
+coverage
+.DS_Store
+npm-debug.log*
+*.tsbuildinfo
+eslint.config.mjs
+.prettierrc

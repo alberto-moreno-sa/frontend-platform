@@ -1,0 +1,55 @@
+services:
+  auth-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    environment:
+      - MONGODB_URI=${MONGODB_URI:-mongodb://mongo:27017/auth_db}
+      - REDIS_URI=redis://redis:6379
+      - KEY_ENCRYPTION_SECRET=${KEY_ENCRYPTION_SECRET:-dev-encryption-secret-change-me}
+      - JWT_KID=${JWT_KID:-2024-02-v1}
+      - ACCESS_TOKEN_TTL=900
+      - REFRESH_TOKEN_TTL=604800
+      - ISSUER_URL=${ISSUER_URL:-https://auth.yourapp.com}
+      - AUDIENCE=${AUDIENCE:-yourapp-api}
+      - ALLOWED_ORIGINS=${ALLOWED_ORIGINS:-http://localhost:3000}
+      - PORT=3001
+      - NODE_ENV=development
+    depends_on:
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+
+  mongo:
+    image: mongo:7-jammy
+    profiles:
+      - local-db
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  mongo-data:
+  redis-data:

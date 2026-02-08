@@ -1,0 +1,38 @@
+# Git
+.git
+.gitignore
+
+# Dependencies (each service installs its own)
+**/node_modules
+
+# Build artifacts
+**/dist
+**/build
+
+# Environment files
+**/.env
+**/.env.*
+
+# IDE
+.idea
+.vscode
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+**/*.log
+
+# Tests & coverage
+**/coverage
+**/__tests__
+
+# Documentation
+**/*.md
+
+# Storybook static
+**/storybook-static
+
+# Claude
+.claude
