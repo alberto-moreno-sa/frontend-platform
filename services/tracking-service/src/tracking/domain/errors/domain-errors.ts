@@ -13,7 +13,7 @@ export const DomainErrors = {
   },
   INVALID_TIMESTAMP: {
     code: 'INVALID_TRACKING_DATA',
-    message: 'Invalid timestamp format. Expected ISO 8601.',
+    message: 'Invalid timestamp format. Expected ISO 8601 in UTC (e.g. 2024-01-01T00:00:00Z).',
   },
   INVALID_SESSION_ID: {
     code: 'INVALID_TRACKING_DATA',

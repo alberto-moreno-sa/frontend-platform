@@ -1,6 +1,6 @@
 import { validate } from './validate.middleware';
 import { z } from 'zod';
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response } from 'express';
 import { AppError } from '../errors/app-error';
 
 const schema = z.object({

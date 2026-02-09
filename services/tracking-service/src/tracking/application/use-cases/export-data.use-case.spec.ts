@@ -1,5 +1,4 @@
 import { createExportDataUseCase } from './export-data.use-case';
-import { AppError } from '@common/errors/app-error';
 
 const mockEvents = [
   {

@@ -1,5 +1,4 @@
 import { createRefreshTokenUseCase } from './refresh-token.use-case';
-import { AppError } from '@common/errors/app-error';
 
 const mockDeps = () => ({
   tokenService: {

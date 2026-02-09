@@ -22,7 +22,16 @@ export const validateTrackingData = (
     return Left(DomainErrors.INVALID_ACTION);
   }
 
-  if (!data.timestamp || isNaN(Date.parse(String(data.timestamp)))) {
+  if (!data.timestamp) {
+    return Left(DomainErrors.INVALID_TIMESTAMP);
+  }
+
+  if (typeof data.timestamp === 'string') {
+    const ISO_UTC_RE = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?Z$/;
+    if (!ISO_UTC_RE.test(data.timestamp) || isNaN(Date.parse(data.timestamp))) {
+      return Left(DomainErrors.INVALID_TIMESTAMP);
+    }
+  } else if (!(data.timestamp instanceof Date) || isNaN(data.timestamp.getTime())) {
     return Left(DomainErrors.INVALID_TIMESTAMP);
   }
 

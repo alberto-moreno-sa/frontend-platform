@@ -25,20 +25,25 @@ export const createStreamStatsUseCase = (deps: StreamStatsDeps) => {
     res.setHeader('X-Accel-Buffering', 'no');
     res.flushHeaders();
 
+    log.debug('SSE client connecting');
+
     // Send initial stats snapshot
     try {
       const stats = await deps.trackingRepo.getAggregatedStats({});
       res.write(`data: ${JSON.stringify(stats)}\n\n`);
+      log.debug('Initial snapshot sent');
     } catch (error) {
       log.error({ err: error }, 'Failed to send initial snapshot');
     }
 
     // Register client for real-time updates
     deps.sseEmitter.addClient(res);
+    log.info({ clients: deps.sseEmitter.getClientCount() }, 'SSE client registered');
 
     // Cleanup on disconnect
     res.on('close', () => {
       deps.sseEmitter.removeClient(res);
+      log.info({ clients: deps.sseEmitter.getClientCount() }, 'SSE client disconnected');
     });
   };
 };

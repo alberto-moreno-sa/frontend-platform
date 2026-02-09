@@ -1,6 +1,9 @@
 import { Response } from 'express';
 import { SSEEmitterPort } from '@tracking/application/ports/sse-emitter.port';
 import { TrackingEventEntity } from '@tracking/domain/entities/tracking-event.entity';
+import { logger } from '@common/logger';
+
+const log = logger.child({ component: 'SSEEmitter' });
 
 /**
  * SSE emitter that manages connected clients via a Set of Response objects.
@@ -33,8 +36,10 @@ export const createNodeSSEEmitterAdapter = (): SSEEmitterPort => {
           client.write(`event: interaction\ndata: ${data}\n\n`);
         } catch {
           clients.delete(client);
+          log.debug({ clients: clients.size }, 'Stale SSE client removed');
         }
       }
+      log.debug({ clients: clients.size, componentName: event.componentName }, 'Event broadcast');
     },
 
     getClientCount: (): number => clients.size,

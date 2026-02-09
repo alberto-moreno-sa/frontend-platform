@@ -3,6 +3,9 @@ import { createExportDataUseCase } from '@tracking/application/use-cases/export-
 import { StatsFilters } from '@tracking/application/ports/tracking-repository.port';
 import { validate } from '@common/middleware/validate.middleware';
 import { exportQuerySchema } from '@tracking/infrastructure/validation/export-query.schema';
+import { logger } from '@common/logger';
+
+const log = logger.child({ component: 'ExportRoutes' });
 
 interface ExportRoutesDeps {
   readonly exportData: ReturnType<typeof createExportDataUseCase>;
@@ -28,7 +31,9 @@ export const createExportRoutes = (deps: ExportRoutesDeps): Router => {
         };
         const format = (query.format as 'csv' | 'json') || 'json';
 
+        log.debug({ filters, format, userId: req.user?.userId }, 'Export request');
         const result = await deps.exportData(filters, format);
+        log.info({ format, filename: result.filename, userId: req.user?.userId }, 'Export completed');
 
         res.setHeader('Content-Type', result.contentType);
         res.setHeader('Content-Disposition', `attachment; filename="${result.filename}"`);

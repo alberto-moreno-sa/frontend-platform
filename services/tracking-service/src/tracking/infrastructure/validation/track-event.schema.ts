@@ -4,7 +4,7 @@ export const trackEventSchema = z.object({
   componentName: z.string().min(1, 'componentName is required'),
   variant: z.string().min(1, 'variant is required'),
   action: z.enum(['click', 'hover', 'focus', 'blur', 'submit', 'view', 'scroll', 'change']),
-  timestamp: z.string().datetime({ message: 'Invalid timestamp format. Expected ISO 8601.' }),
+  timestamp: z.string().datetime({ offset: false, message: 'Invalid timestamp format. Expected ISO 8601 in UTC (e.g. 2024-01-01T00:00:00Z).' }),
   sessionId: z.string().min(1, 'sessionId is required'),
   pageUrl: z.string().min(1, 'pageUrl is required'),
   pageTitle: z.string().nullish().default(null),

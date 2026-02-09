@@ -12,7 +12,10 @@ interface GetStatsDeps {
 export const createGetStatsUseCase = (deps: GetStatsDeps) => {
   return async (filters: StatsFilters): Promise<AggregatedStats> => {
     try {
-      return await deps.trackingRepo.getAggregatedStats(filters);
+      log.debug({ filters }, 'Computing aggregated stats');
+      const result = await deps.trackingRepo.getAggregatedStats(filters);
+      log.debug({ totalEvents: result.summary.totalInteractions }, 'Stats computed');
+      return result;
     } catch (error) {
       log.error({ err: error }, 'Failed to compute stats');
       throw AppError.fromErrorCode(ErrorCodes.STATS_ERROR);

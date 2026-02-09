@@ -1,5 +1,4 @@
 import { createLoginUserUseCase } from './login-user.use-case';
-import { AppError } from '@common/errors/app-error';
 import * as bcrypt from 'bcryptjs';
 
 const makeUser = (overrides = {}) => ({

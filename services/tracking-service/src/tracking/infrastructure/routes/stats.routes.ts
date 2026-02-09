@@ -4,6 +4,9 @@ import { createStreamStatsUseCase } from '@tracking/application/use-cases/stream
 import { StatsFilters } from '@tracking/application/ports/tracking-repository.port';
 import { validate } from '@common/middleware/validate.middleware';
 import { statsQuerySchema } from '@tracking/infrastructure/validation/stats-query.schema';
+import { logger } from '@common/logger';
+
+const log = logger.child({ component: 'StatsRoutes' });
 
 interface StatsRoutesDeps {
   readonly getStats: ReturnType<typeof createGetStatsUseCase>;
@@ -26,6 +29,7 @@ export const createStatsRoutes = (deps: StatsRoutesDeps): Router => {
           component: query.component,
           page: query.page,
         };
+        log.debug({ filters }, 'Stats request');
         const stats = await deps.getStats(filters);
         res.json(stats);
       } catch (error) {
@@ -37,8 +41,9 @@ export const createStatsRoutes = (deps: StatsRoutesDeps): Router => {
   // GET /api/components/stats/stream (SSE)
   router.get(
     '/stream',
-    async (req: Request, res: Response, next: NextFunction) => {
+    async (_req: Request, res: Response, next: NextFunction) => {
       try {
+        log.debug('SSE stream client connected');
         await deps.streamStats(res);
       } catch (error) {
         next(error);

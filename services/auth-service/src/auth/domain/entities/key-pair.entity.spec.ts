@@ -1,4 +1,4 @@
-import { createKeyPair, KeyPairEntity } from './key-pair.entity';
+import { createKeyPair } from './key-pair.entity';
 
 describe('KeyPair Entity', () => {
   describe('createKeyPair', () => {

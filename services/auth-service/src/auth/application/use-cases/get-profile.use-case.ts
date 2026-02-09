@@ -1,6 +1,9 @@
 import { UserRepositoryPort } from '../ports/user-repository.port';
 import { AppError } from '@common/errors/app-error';
 import { ErrorCodes } from '@common/constants/error-codes';
+import { logger } from '@common/logger';
+
+const log = logger.child({ component: 'GetProfile' });
 
 interface GetProfileDeps {
   readonly userRepo: UserRepositoryPort;
@@ -8,6 +11,7 @@ interface GetProfileDeps {
 
 export const createGetProfileUseCase = (deps: GetProfileDeps) => ({
   async execute(userId: string) {
+    log.debug({ userId }, 'Fetching profile');
     const user = await deps.userRepo.findById(userId);
     if (!user) {
       throw AppError.fromErrorCode(ErrorCodes.USER_NOT_FOUND);

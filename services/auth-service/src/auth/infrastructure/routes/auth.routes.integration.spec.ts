@@ -1,5 +1,5 @@
 import request from 'supertest';
-import { createTestApp, createMockUseCases, rejectAuthMiddleware } from '../../../__tests__/helpers/create-test-app';
+import { createTestApp, rejectAuthMiddleware } from '../../../__tests__/helpers/create-test-app';
 
 describe('Auth Routes (Integration)', () => {
   describe('POST /api/auth/register', () => {

@@ -1,6 +1,6 @@
 import { createAuthMiddleware } from './auth.middleware';
 import { AppError } from '../errors/app-error';
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response } from 'express';
 
 const mockDeps = () => ({
   tokenService: {

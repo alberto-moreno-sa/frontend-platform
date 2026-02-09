@@ -1,5 +1,4 @@
 import { createGetStatsUseCase } from './get-stats.use-case';
-import { AppError } from '@common/errors/app-error';
 
 const mockStats = {
   summary: {

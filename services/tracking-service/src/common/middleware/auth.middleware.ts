@@ -2,6 +2,9 @@ import { Request, Response, NextFunction } from 'express';
 import { createRemoteJWKSet, jwtVerify } from 'jose';
 import { AppError } from '../errors/app-error';
 import { ErrorCodes } from '../constants/error-codes';
+import { logger } from '../logger';
+
+const log = logger.child({ component: 'Auth' });
 
 /**
  * Cross-service authentication middleware that verifies JWTs using the
@@ -16,6 +19,7 @@ export const createAuthMiddleware = (authServiceUrl: string) => {
     const authHeader = req.headers.authorization;
 
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      log.warn({ path: req.path }, 'Missing or malformed Authorization header');
       next(AppError.fromErrorCode(ErrorCodes.UNAUTHORIZED));
       return;
     }
@@ -31,11 +35,14 @@ export const createAuthMiddleware = (authServiceUrl: string) => {
         email: payload.email as string,
       };
 
+      log.debug({ userId: payload.sub }, 'JWT verified');
       next();
     } catch (error) {
       if (error instanceof Error && error.message.includes('expired')) {
+        log.warn({ path: req.path }, 'Token expired');
         next(AppError.fromErrorCode(ErrorCodes.TOKEN_EXPIRED));
       } else {
+        log.warn({ path: req.path, err: error }, 'Invalid token');
         next(AppError.fromErrorCode(ErrorCodes.TOKEN_INVALID));
       }
     }

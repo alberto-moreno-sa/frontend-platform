@@ -20,8 +20,10 @@ interface ExportResult {
 export const createExportDataUseCase = (deps: ExportDataDeps) => {
   return async (filters: StatsFilters, format: 'csv' | 'json'): Promise<ExportResult> => {
     try {
+      log.debug({ filters, format }, 'Export started');
       const events = await deps.trackingRepo.findAll(filters);
       const dateStr = new Date().toISOString().split('T')[0];
+      log.info({ format, totalEvents: events.length }, 'Export ready');
 
       if (format === 'csv') {
         return {

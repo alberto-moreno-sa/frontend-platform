@@ -5,6 +5,9 @@ import { UserRepositoryPort } from '@auth/application/ports/user-repository.port
 import { isActiveUser } from '@auth/domain/entities/user.entity';
 import { AppError } from '../errors/app-error';
 import { ErrorCodes } from '../constants/error-codes';
+import { logger } from '../logger';
+
+const log = logger.child({ component: 'Auth' });
 
 export interface AuthMiddlewareDeps {
   readonly tokenService: TokenServicePort;
@@ -26,6 +29,7 @@ export const createAuthMiddleware =
     try {
       const authHeader = req.headers.authorization;
       if (!authHeader?.startsWith('Bearer ')) {
+        log.warn({ path: req.path }, 'Missing or malformed Authorization header');
         throw AppError.fromErrorCode(ErrorCodes.TOKEN_INVALID);
       }
 
@@ -34,15 +38,18 @@ export const createAuthMiddleware =
 
       const jti = payload.jti as string;
       if (await deps.blacklist.isBlacklisted(jti)) {
+        log.warn({ path: req.path, jti }, 'Blacklisted token used');
         throw AppError.fromErrorCode(ErrorCodes.TOKEN_BLACKLISTED);
       }
 
       const userId = payload.user_id as string;
       const user = await deps.userRepo.findById(userId);
       if (!user) {
+        log.warn({ userId }, 'Token references non-existent user');
         throw AppError.fromErrorCode(ErrorCodes.USER_NOT_FOUND);
       }
       if (!isActiveUser(user)) {
+        log.warn({ userId }, 'Token references inactive account');
         throw AppError.fromErrorCode(ErrorCodes.ACCOUNT_INACTIVE);
       }
 
@@ -53,12 +60,15 @@ export const createAuthMiddleware =
         jti,
       };
 
+      log.debug({ userId }, 'JWT verified');
       next();
     } catch (error) {
       if (error instanceof AppError) return next(error);
       if ((error as Error).message?.includes('expired')) {
+        log.warn({ path: req.path }, 'Token expired');
         return next(AppError.fromErrorCode(ErrorCodes.TOKEN_EXPIRED));
       }
+      log.warn({ path: req.path, err: error }, 'Invalid token');
       next(AppError.fromErrorCode(ErrorCodes.TOKEN_INVALID));
     }
   };

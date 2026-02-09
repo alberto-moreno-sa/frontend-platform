@@ -2,6 +2,9 @@ import { Request, Response, NextFunction } from 'express';
 import { ZodSchema, ZodError } from 'zod';
 import { AppError } from '../errors/app-error';
 import { ErrorCodes } from '../constants/error-codes';
+import { logger } from '../logger';
+
+const log = logger.child({ component: 'Validation' });
 
 export const validate =
   (schema: ZodSchema, source: 'body' | 'query' = 'body') =>
@@ -18,6 +21,7 @@ export const validate =
     } catch (error) {
       if (error instanceof ZodError) {
         const messages = error.errors.map((e) => `${e.path.join('.')}: ${e.message}`);
+        log.debug({ source, errors: messages }, 'Validation failed');
         next(
           AppError.fromErrorCode(
             ErrorCodes.INVALID_INPUT,

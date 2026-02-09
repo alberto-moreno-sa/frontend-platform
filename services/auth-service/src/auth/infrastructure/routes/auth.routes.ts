@@ -6,6 +6,9 @@ import { refreshTokenSchema } from '../validation/refresh-token.schema';
 
 import { createDeviceInfo } from '@auth/domain/value-objects/device-info.vo';
 import { AuthenticatedUser } from '@common/types';
+import { logger } from '@common/logger';
+
+const log = logger.child({ component: 'AuthRoutes' });
 
 export interface AuthRoutesDeps {
   readonly useCases: {
@@ -28,6 +31,7 @@ export const createAuthRoutes = (deps: AuthRoutesDeps): Router => {
     validate(registerSchema),
     async (req: Request, res: Response, next: NextFunction) => {
       try {
+        log.debug({ email: req.body.email }, 'Register request');
         const ip = (req.headers['x-forwarded-for'] as string) || req.ip || '0.0.0.0';
         const userAgent = req.headers['user-agent'] || '';
         const device = createDeviceInfo('unknown', ip, userAgent);
@@ -49,6 +53,7 @@ export const createAuthRoutes = (deps: AuthRoutesDeps): Router => {
     validate(loginSchema),
     async (req: Request, res: Response, next: NextFunction) => {
       try {
+        log.debug({ email: req.body.email }, 'Login request');
         const ip = (req.headers['x-forwarded-for'] as string) || req.ip || '0.0.0.0';
         const userAgent = req.headers['user-agent'] || '';
         const device = createDeviceInfo(req.body.deviceId || 'unknown', ip, userAgent);
@@ -69,6 +74,7 @@ export const createAuthRoutes = (deps: AuthRoutesDeps): Router => {
     validate(refreshTokenSchema),
     async (req: Request, res: Response, next: NextFunction) => {
       try {
+        log.debug('Refresh token request');
         const result = await deps.useCases.refreshToken.execute(req.body.refresh_token);
         res.json(result);
       } catch (error) {
@@ -82,6 +88,7 @@ export const createAuthRoutes = (deps: AuthRoutesDeps): Router => {
     deps.authMiddleware,
     async (req: Request, res: Response, next: NextFunction) => {
       try {
+        log.debug({ userId: req.user!.userId }, 'Logout request');
         const result = await deps.useCases.logout.execute(req.user!);
         res.json(result);
       } catch (error) {
@@ -92,6 +99,7 @@ export const createAuthRoutes = (deps: AuthRoutesDeps): Router => {
 
   router.post('/verify-token', async (req: Request, res: Response, next: NextFunction) => {
     try {
+      log.debug('Verify token request');
       const authHeader = req.headers.authorization;
       const token = authHeader?.replace('Bearer ', '') || '';
       const result = await deps.useCases.verifyToken.execute(token);

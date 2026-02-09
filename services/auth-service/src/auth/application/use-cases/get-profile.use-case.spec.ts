@@ -1,5 +1,4 @@
 import { createGetProfileUseCase } from './get-profile.use-case';
-import { AppError } from '@common/errors/app-error';
 
 describe('GetProfile Use Case', () => {
   it('should return user profile', async () => {

@@ -3,6 +3,9 @@ import { validate } from '@common/middleware/validate.middleware';
 import { updateProfileSchema } from '../validation/update-profile.schema';
 
 import { deleteAccountSchema } from '../validation/delete-account.schema';
+import { logger } from '@common/logger';
+
+const log = logger.child({ component: 'UserRoutes' });
 
 export interface UserRoutesDeps {
   readonly useCases: {
@@ -24,6 +27,7 @@ export const createUserRoutes = (deps: UserRoutesDeps): Router => {
 
   router.get('/profile', async (req: Request, res: Response, next: NextFunction) => {
     try {
+      log.debug({ userId: req.user!.userId }, 'Get profile request');
       const result = await deps.useCases.getProfile.execute(req.user!.userId);
       res.json(result);
     } catch (error) {
@@ -36,6 +40,7 @@ export const createUserRoutes = (deps: UserRoutesDeps): Router => {
     validate(updateProfileSchema),
     async (req: Request, res: Response, next: NextFunction) => {
       try {
+        log.debug({ userId: req.user!.userId }, 'Update profile request');
         const result = await deps.useCases.updateProfile.execute(req.user!.userId, req.body.name);
         res.json(result);
       } catch (error) {
@@ -49,6 +54,7 @@ export const createUserRoutes = (deps: UserRoutesDeps): Router => {
     validate(deleteAccountSchema),
     async (req: Request, res: Response, next: NextFunction) => {
       try {
+        log.debug({ userId: req.user!.userId }, 'Delete account request');
         const result = await deps.useCases.deleteAccount.execute(
           req.user!.userId,
           req.user!.jti,
@@ -63,6 +69,7 @@ export const createUserRoutes = (deps: UserRoutesDeps): Router => {
 
   router.get('/sessions', async (req: Request, res: Response, next: NextFunction) => {
     try {
+      log.debug({ userId: req.user!.userId }, 'Get sessions request');
       const result = await deps.useCases.getSessions.execute(req.user!.userId, req.user!.deviceId);
       res.json(result);
     } catch (error) {

@@ -1,5 +1,4 @@
 import { createVerifyTokenUseCase } from './verify-token.use-case';
-import { AppError } from '@common/errors/app-error';
 
 const mockDeps = () => ({
   tokenService: {

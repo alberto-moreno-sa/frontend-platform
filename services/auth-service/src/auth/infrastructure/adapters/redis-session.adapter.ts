@@ -1,5 +1,8 @@
 import Redis from 'ioredis';
 import { SessionPort, SessionData } from '@auth/application/ports/session.port';
+import { logger } from '@common/logger';
+
+const log = logger.child({ component: 'SessionStore' });
 
 const SESSION_TTL = 604800; // 7 days
 
@@ -8,6 +11,7 @@ export const createRedisSessionAdapter = (redis: Redis): SessionPort => {
 
   return {
     async create(userId, sessionId, data) {
+      log.debug({ userId, sessionId }, 'Creating session');
       const k = key(userId, sessionId);
       await redis.hset(k, data as unknown as Record<string, string>);
       await redis.expire(k, SESSION_TTL);
@@ -25,6 +29,7 @@ export const createRedisSessionAdapter = (redis: Redis): SessionPort => {
     },
 
     async delete(userId, sessionId) {
+      log.debug({ userId, sessionId }, 'Deleting session');
       await redis.del(key(userId, sessionId));
     },
 
@@ -32,6 +37,7 @@ export const createRedisSessionAdapter = (redis: Redis): SessionPort => {
       const pattern = `sessions:${userId}:*`;
       const keys = await redis.keys(pattern);
       if (keys.length === 0) return 0;
+      log.debug({ userId, count: keys.length }, 'Deleting all sessions');
       return redis.del(...keys);
     },
 

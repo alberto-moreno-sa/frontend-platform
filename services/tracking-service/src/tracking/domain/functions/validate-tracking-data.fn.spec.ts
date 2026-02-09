@@ -44,6 +44,31 @@ describe('validateTrackingData', () => {
     expect(result.isLeft).toBe(true);
   });
 
+  it('should return Left for non-UTC timestamp with offset', () => {
+    const result = validateTrackingData({ ...validInput, timestamp: '2024-01-01T00:00:00+05:00' });
+    expect(result.isLeft).toBe(true);
+  });
+
+  it('should return Left for date-only string (no time)', () => {
+    const result = validateTrackingData({ ...validInput, timestamp: '2024-01-01' });
+    expect(result.isLeft).toBe(true);
+  });
+
+  it('should accept valid UTC timestamp with milliseconds', () => {
+    const result = validateTrackingData({ ...validInput, timestamp: '2024-06-15T12:30:00.500Z' });
+    expect(result.isRight).toBe(true);
+  });
+
+  it('should accept valid UTC timestamp without milliseconds', () => {
+    const result = validateTrackingData({ ...validInput, timestamp: '2024-06-15T12:30:00Z' });
+    expect(result.isRight).toBe(true);
+  });
+
+  it('should accept Date object', () => {
+    const result = validateTrackingData({ ...validInput, timestamp: new Date('2024-01-01T00:00:00Z') });
+    expect(result.isRight).toBe(true);
+  });
+
   it('should return Left for missing sessionId', () => {
     const result = validateTrackingData({ ...validInput, sessionId: '' });
     expect(result.isLeft).toBe(true);

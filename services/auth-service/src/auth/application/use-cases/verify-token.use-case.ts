@@ -4,6 +4,9 @@ import { UserRepositoryPort } from '../ports/user-repository.port';
 import { isActiveUser } from '@auth/domain/entities/user.entity';
 import { AppError } from '@common/errors/app-error';
 import { ErrorCodes } from '@common/constants/error-codes';
+import { logger } from '@common/logger';
+
+const log = logger.child({ component: 'VerifyToken' });
 
 interface VerifyTokenDeps {
   readonly tokenService: TokenServicePort;
@@ -17,6 +20,7 @@ export const createVerifyTokenUseCase = (deps: VerifyTokenDeps) => ({
 
     const jti = payload.jti as string;
     if (await deps.blacklist.isBlacklisted(jti)) {
+      log.debug({ jti }, 'Token is blacklisted');
       throw AppError.fromErrorCode(ErrorCodes.TOKEN_BLACKLISTED);
     }
 
@@ -28,6 +32,8 @@ export const createVerifyTokenUseCase = (deps: VerifyTokenDeps) => ({
     if (!isActiveUser(user)) {
       throw AppError.fromErrorCode(ErrorCodes.ACCOUNT_INACTIVE);
     }
+
+    log.debug({ userId }, 'Token verified');
 
     return {
       success: true,

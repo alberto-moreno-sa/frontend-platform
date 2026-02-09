@@ -1,5 +1,4 @@
 import { createTrackComponentUseCase } from './track-component.use-case';
-import { AppError } from '@common/errors/app-error';
 
 const mockBroker = () => ({
   connect: jest.fn(),

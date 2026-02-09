@@ -1,5 +1,8 @@
 import { RefreshTokenRepositoryPort } from '../ports/refresh-token-repository.port';
 import { SessionPort } from '../ports/session.port';
+import { logger } from '@common/logger';
+
+const log = logger.child({ component: 'GetSessions' });
 
 interface GetSessionsDeps {
   readonly refreshTokenRepo: RefreshTokenRepositoryPort;
@@ -8,6 +11,7 @@ interface GetSessionsDeps {
 
 export const createGetSessionsUseCase = (deps: GetSessionsDeps) => ({
   async execute(userId: string, currentDeviceId: string) {
+    log.debug({ userId }, 'Fetching sessions');
     const activeTokens = await deps.refreshTokenRepo.findActiveByUserId(userId);
     const redisSessions = await deps.sessionService.findAllByUserId(userId);
 
@@ -26,6 +30,8 @@ export const createGetSessionsUseCase = (deps: GetSessionsDeps) => ({
         current: token.deviceId === currentDeviceId,
       };
     });
+
+    log.debug({ userId, count: sessions.length }, 'Sessions fetched');
 
     return {
       success: true,
