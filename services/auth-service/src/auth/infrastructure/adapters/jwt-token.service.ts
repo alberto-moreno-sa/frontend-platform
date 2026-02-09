@@ -1,5 +1,6 @@
 import { TokenServicePort } from '@auth/application/ports/token-service.port';
 import { KeyPairRepositoryPort } from '@auth/application/ports/key-pair-repository.port';
+import { JwksCachePort } from '@auth/application/ports/jwks-cache.port';
 import { AppConfig } from '@config';
 import { AppError } from '@common/errors/app-error';
 import { ErrorCodes } from '@common/constants/error-codes';
@@ -23,6 +24,7 @@ const log = logger.child({ component: 'JwtTokenService' });
 export const createJwtTokenService = (
   keyPairRepo: KeyPairRepositoryPort,
   config: AppConfig,
+  jwksCache?: JwksCachePort,
 ): TokenServicePort & { initialize: () => Promise<void> } => {
   /** Generates an initial ES256 key pair if none exists (idempotent on startup). */
   const initialize = async (): Promise<void> => {
@@ -36,7 +38,8 @@ export const createJwtTokenService = (
         privateKeyEncrypted: generated.privateKeyEncrypted,
       });
       await keyPairRepo.create(keyPairData);
-      log.debug({ kid: config.jwtKid }, 'Initial key pair created');
+      await jwksCache?.invalidate();
+      log.debug({ kid: config.jwtKid }, 'Initial key pair created, JWKS cache invalidated');
     }
   };
 

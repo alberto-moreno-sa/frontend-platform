@@ -17,6 +17,9 @@ services:
       - ALLOWED_ORIGINS=${ALLOWED_ORIGINS:-http://localhost:3000}
       - PORT=3001
       - NODE_ENV=development
+    networks:
+      - default
+      - backend
     depends_on:
       redis:
         condition: service_healthy
@@ -49,6 +52,10 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+
+networks:
+  backend:
+    external: true
 
 volumes:
   mongo-data:

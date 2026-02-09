@@ -28,5 +28,5 @@ export const loadConfig = (): AppConfig => ({
   issuerUrl: process.env.ISSUER_URL || 'https://auth.yourapp.com',
   audience: process.env.AUDIENCE || 'yourapp-api',
   allowedOrigins: (process.env.ALLOWED_ORIGINS || 'http://localhost:3000').split(','),
-  logLevel: process.env.LOG_LEVEL || 'info',
+  logLevel: process.env.LOG_LEVEL || 'debug',
 });

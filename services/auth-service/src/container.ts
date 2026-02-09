@@ -73,10 +73,10 @@ export const createContainer = async (config: AppConfig): Promise<AppContainer> 
   const userRepo = createMongoUserRepository(userModel);
   const refreshTokenRepo = createMongoRefreshTokenRepository(refreshTokenModel);
   const keyPairRepo = createMongoKeyPairRepository(keyPairModel);
-  const tokenService = createJwtTokenService(keyPairRepo, config);
+  const jwksCache = createRedisJwksCacheAdapter(redis);
+  const tokenService = createJwtTokenService(keyPairRepo, config, jwksCache);
   const sessionService = createRedisSessionAdapter(redis);
   const blacklist = createRedisBlacklistAdapter(redis);
-  const jwksCache = createRedisJwksCacheAdapter(redis);
 
   // Initialize token service (generate key pair if needed)
   await tokenService.initialize();
