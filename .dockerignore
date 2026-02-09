@@ -34,5 +34,4 @@ Thumbs.db
 # Storybook static
 **/storybook-static
 
-# Claude
-.claude
+.nx

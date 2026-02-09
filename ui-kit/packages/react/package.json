@@ -1,0 +1,127 @@
+{
+  "name": "@ui-kit/react",
+  "version": "0.1.0",
+  "description": "React components for @ui-kit design system",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./button": {
+      "types": "./dist/button/index.d.ts",
+      "import": "./dist/button.js",
+      "require": "./dist/button.cjs"
+    },
+    "./input": {
+      "types": "./dist/input/index.d.ts",
+      "import": "./dist/input.js",
+      "require": "./dist/input.cjs"
+    },
+    "./textarea": {
+      "types": "./dist/textarea/index.d.ts",
+      "import": "./dist/textarea.js",
+      "require": "./dist/textarea.cjs"
+    },
+    "./input-group": {
+      "types": "./dist/input-group/index.d.ts",
+      "import": "./dist/input-group.js",
+      "require": "./dist/input-group.cjs"
+    },
+    "./card": {
+      "types": "./dist/card/index.d.ts",
+      "import": "./dist/card.js",
+      "require": "./dist/card.cjs"
+    },
+    "./modal": {
+      "types": "./dist/modal/index.d.ts",
+      "import": "./dist/modal.js",
+      "require": "./dist/modal.cjs"
+    },
+    "./badge": {
+      "types": "./dist/badge/index.d.ts",
+      "import": "./dist/badge.js",
+      "require": "./dist/badge.cjs"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "button": [
+        "./dist/button/index.d.ts"
+      ],
+      "input": [
+        "./dist/input/index.d.ts"
+      ],
+      "textarea": [
+        "./dist/textarea/index.d.ts"
+      ],
+      "input-group": [
+        "./dist/input-group/index.d.ts"
+      ],
+      "card": [
+        "./dist/card/index.d.ts"
+      ],
+      "modal": [
+        "./dist/modal/index.d.ts"
+      ],
+      "badge": [
+        "./dist/badge/index.d.ts"
+      ]
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "sideEffects": false,
+  "scripts": {
+    "build": "nx vite:build",
+    "dev": "nx vite:build --watch",
+    "lint": "eslint \"src/**/*.{ts,tsx}\"",
+    "format": "prettier --write \"src/**/*.{ts,tsx}\"",
+    "format:check": "prettier --check \"src/**/*.{ts,tsx}\"",
+    "storybook": "nx serve:storybook -p 6006",
+    "build-storybook": "nx build:storybook",
+    "test": "nx jest:test",
+    "test:coverage": "nx jest:test --coverage"
+  },
+  "dependencies": {
+    "@ui-kit/styles": "*",
+    "@ui-kit/utils": "*",
+    "class-variance-authority": "0.7.1"
+  },
+  "devDependencies": {
+    "@jest/globals": "29.7.0",
+    "@storybook/addon-essentials": "8.5.3",
+    "@storybook/addon-interactions": "8.5.3",
+    "@storybook/blocks": "8.5.3",
+    "@storybook/react-vite": "8.5.3",
+    "@tailwindcss/postcss": "^4.1.18",
+    "@tailwindcss/vite": "^4.1.18",
+    "@testing-library/jest-dom": "6.6.3",
+    "@testing-library/react": "16.2.0",
+    "@testing-library/user-event": "14.5.2",
+    "@types/jest": "30.0.0",
+    "@types/react": "19.0.8",
+    "@types/react-dom": "19.0.3",
+    "@vitejs/plugin-react": "4.3.4",
+    "identity-obj-proxy": "3.0.0",
+    "jest": "29.7.0",
+    "jest-environment-jsdom": "29.7.0",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "storybook": "8.5.3",
+    "tailwindcss": "^4.1.18",
+    "ts-jest": "29.2.5",
+    "typescript": "5.7.3",
+    "vite": "6.0.11",
+    "vite-plugin-dts": "4.5.0"
+  }
+}

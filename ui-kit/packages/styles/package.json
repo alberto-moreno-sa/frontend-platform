@@ -1,0 +1,28 @@
+{
+  "name": "@ui-kit/styles",
+  "version": "0.1.0",
+  "description": "Design tokens and theme for @ui-kit (Tailwind CSS v4)",
+  "license": "MIT",
+  "type": "module",
+  "style": "./src/index.css",
+  "exports": {
+    ".": "./src/index.css",
+    "./index.css": "./src/index.css",
+    "./css": "./src/index.css",
+    "./colors": "./src/colors.css",
+    "./typography": "./src/typography.css",
+    "./shadows": "./src/shadows.css",
+    "./spacing": "./src/spacing.css"
+  },
+  "files": ["src"],
+  "sideEffects": ["**/*.css"],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "echo 'No build step needed for styles'"
+  },
+  "peerDependencies": {
+    "tailwindcss": "^4.0.0"
+  }
+}

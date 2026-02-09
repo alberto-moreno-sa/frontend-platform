@@ -1,0 +1,31 @@
+export {
+  Modal,
+  ModalHeader,
+  ModalIcon,
+  ModalTitle,
+  ModalDescription,
+  ModalBody,
+  ModalFooter,
+  ModalDivider,
+  type ModalProps,
+  type ModalHeaderProps,
+  type ModalIconProps,
+  type ModalTitleProps,
+  type ModalDescriptionProps,
+  type ModalBodyProps,
+  type ModalFooterProps,
+  type ModalDividerProps,
+} from "./Modal";
+
+export {
+  overlayStyles,
+  modalStyles,
+  modalHeaderStyles,
+  modalIconStyles,
+  modalTitleStyles,
+  modalDescriptionStyles,
+  modalBodyStyles,
+  modalFooterStyles,
+  modalDividerStyles,
+  modalCloseButtonStyles,
+} from "./Modal.styles";
