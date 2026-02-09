@@ -29,6 +29,8 @@ export default defineConfig({
         card: resolve(__dirname, "src/card/index.ts"),
         modal: resolve(__dirname, "src/modal/index.ts"),
         badge: resolve(__dirname, "src/badge/index.ts"),
+        "date-picker-range": resolve(__dirname, "src/date-picker-range/index.ts"),
+        select: resolve(__dirname, "src/select/index.ts"),
       },
       formats: ["es", "cjs"],
     },

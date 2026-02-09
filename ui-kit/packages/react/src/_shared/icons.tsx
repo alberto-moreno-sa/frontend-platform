@@ -1,5 +1,3 @@
-import * as React from "react";
-
 export const HelpCircleIcon = () => (
   <svg
     width="16"

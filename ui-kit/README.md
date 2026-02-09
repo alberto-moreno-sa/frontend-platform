@@ -1,221 +1,237 @@
 # @ui-kit
 
-React component library based on the Untitled UI design system. Monorepo powered by Nx, Tailwind CSS v4, and CVA (class-variance-authority).
+Librería de componentes React basada en el design system Untitled UI. Monorepo con Nx, Tailwind CSS v4 y CVA (class-variance-authority).
 
-## Packages
+## Stack
 
-| Package | Description |
-|---------|-------------|
-| `@ui-kit/react` | React components (Button, Input, Textarea, InputGroup, Card, Modal, Badge) |
-| `@ui-kit/styles` | CSS design tokens (colors, typography, shadows, spacing) |
-| `@ui-kit/utils` | Utilities (`cx` for Tailwind class merging, `sortCx`) |
+| Tecnología | Uso |
+| ---------- | --- |
+| React 19 | Componentes con `forwardRef` |
+| Tailwind CSS v4 | Estilos con directiva `@theme` (sin tailwind.config.js) |
+| CVA | Variantes de estilo por componente |
+| tailwind-merge | Resolución de clases conflictivas vía `cx` |
+| Vite 6 | Build de librería (ES + CJS + tipos) |
+| Storybook 8 | Documentación visual e interactiva |
+| Jest + Testing Library | Tests unitarios y de interacción |
+| Nx 22 | Orquestación del monorepo, cache, tasks |
 
-## Requirements
+## Paquetes
+
+| Paquete | Descripción |
+| ------- | ----------- |
+| `@ui-kit/react` | Componentes React (Button, Input, Textarea, InputGroup, Card, Modal, Badge, DatePickerRange, Select) |
+| `@ui-kit/styles` | Design tokens CSS (colores, tipografía, sombras, espaciado) |
+| `@ui-kit/utils` | Utilidades (`cx` para merge de clases Tailwind) |
+
+## Arquitectura
+
+```text
+ui-kit/
+├── packages/
+│   ├── react/                    # Componentes React
+│   │   ├── src/
+│   │   │   ├── _shared/          # Estilos y iconos compartidos entre componentes
+│   │   │   ├── button/           # Button, CloseButton
+│   │   │   ├── input/            # Input
+│   │   │   ├── textarea/         # Textarea
+│   │   │   ├── input-group/      # InputGroup, InputPrefix
+│   │   │   ├── card/             # Card, CardImage, CardHeader, CardTitle, ...
+│   │   │   ├── modal/            # Modal, ModalHeader, ModalIcon, ModalBody, ...
+│   │   │   ├── badge/            # Badge
+│   │   │   ├── date-picker-range/# DatePickerRange (react-day-picker + date-fns)
+│   │   │   ├── select/           # Select, SelectItem, SelectGroup, SelectSeparator
+│   │   │   └── index.ts          # Barrel export principal
+│   │   ├── .storybook/           # Configuración de Storybook
+│   │   ├── vite.config.ts        # Build de librería (10 entry points)
+│   │   ├── jest.config.cjs       # Configuración de Jest
+│   │   └── package.json
+│   ├── styles/                   # Design tokens (CSS puro)
+│   │   └── src/
+│   │       ├── colors.css        # Paletas + tokens semánticos (text-*, bg-*, border-*, fg-*)
+│   │       ├── typography.css    # Display + body font sizes
+│   │       ├── shadows.css       # xs, sm, md, lg, xl, 2xl, 3xl
+│   │       └── spacing.css       # Escala de espaciado
+│   └── utils/                    # Utilidades compartidas
+│       └── src/
+│           └── cx.ts             # extendTailwindMerge con custom classGroups
+├── nx.json                       # Plugins: @nx/vite, @nx/jest, @nx/storybook
+├── package.json                  # Workspaces + scripts raíz
+└── eslint.config.mjs
+```
+
+### Patrón por componente
+
+Cada componente sigue la misma estructura:
+
+```text
+component/
+├── Component.tsx          # Componente React (forwardRef, VariantProps)
+├── Component.styles.ts    # Variantes CVA con tokens semánticos
+├── Component.stories.tsx  # Stories de Storybook (autodocs)
+├── Component.test.tsx     # Tests con @testing-library/react + userEvent
+└── index.ts               # Barrel exports
+```
+
+- **Estilos**: CVA define variantes (`bg-bg-primary`, `text-text-secondary`, `border-border-primary`, etc.)
+- **Componentes**: `forwardRef` + `VariantProps` de CVA + `cx()` para merge de clases
+- **Tests**: `@testing-library/react` + `userEvent` para simular interacción
+- **Stories**: Storybook con `autodocs`, `argTypes` para controles interactivos
+
+## Componentes disponibles
+
+| Componente | Variantes | Tamaños | Características |
+| ---------- | --------- | ------- | --------------- |
+| **Button** | primary, secondaryGray/Color, tertiaryGray/Color, linkGray/Color | sm, md, lg, xl, 2xl | destructive, loading, leadingIcon, trailingIcon, CloseButton |
+| **Input** | default, error, success | small, medium, large | icon, tooltip, shortcut, isRequired, helperText |
+| **Textarea** | default, error, success | small, medium, large | tooltip, isRequired, helperText, rows |
+| **InputGroup** | - | small, medium, large | prefix, leadingAddon, trailingAddon, label, hint |
+| **Card** | default, elevated, outline, ghost | default, sm | interactive, CardImage, CardHeader action slot |
+| **Modal** | - | sm, md, lg | ModalIcon (5 colores), closeOnOverlayClick, Escape, X button |
+| **Badge** | - | - | - |
+| **DatePickerRange** | - | - | Calendar 2 meses, date inputs, Cancel/Apply, align, minDate/maxDate, i18n |
+| **Select** | default, error, success | small, medium, large | keyboard nav, typeahead, groups, separators, controlled/uncontrolled |
+
+## Setup
+
+### Prerequisitos
 
 - Node.js >= 18
 - npm >= 9
 
-## Installation
+### Instalación
 
 ```bash
+cd ui-kit
 npm install
 ```
 
-## Development
+## Storybook
 
-### Storybook
-
-To visually develop and browse components:
+Storybook permite navegar, probar y documentar los componentes visualmente.
 
 ```bash
-# From the monorepo root
+# Desde la raíz del monorepo ui-kit
 npx nx run @ui-kit/react:storybook
 
-# Or from packages/react
+# O desde packages/react
 cd packages/react && npm run storybook
 ```
 
-Opens <http://localhost:6006> in the browser.
+Abre `http://localhost:6006` en el navegador. Cada componente tiene stories con controles interactivos y documentación automática.
 
-### Watch mode (auto-rebuild)
-
-```bash
-npx nx run @ui-kit/react:dev
-npx nx run @ui-kit/utils:dev
-```
-
-### Tests
+## Tests
 
 ```bash
-# All tests
+# Todos los tests (235 tests)
 npm test
 
-# Only @ui-kit/react
+# Solo @ui-kit/react
 npx nx test react
 
-# A specific component
+# Un componente específico
 npx nx test react --testPathPattern="button/Button.test"
-npx nx test react --testPathPattern="modal/Modal.test"
-npx nx test react --testPathPattern="textarea/Textarea.test"
-npx nx test react --testPathPattern="input-group/InputGroup.test"
+npx nx test react --testPathPattern="select/Select.test"
+npx nx test react --testPathPattern="date-picker-range/DatePickerRange.test"
 
-# With coverage
-npx nx run @ui-kit/react:test:coverage
+# Con cobertura (threshold: 80% branches, functions, lines, statements)
+npx nx test react --coverage
 ```
 
-### Lint and format
+## Build (compilar para usar en otros proyectos)
 
-```bash
-# Lint
-npm run lint
-
-# Check formatting
-npm run format:check
-
-# Apply formatting
-npm run format
-```
-
-## Build
-
-### Build all packages
+### Compilar todos los paquetes
 
 ```bash
 npm run build
 ```
 
-### Build a single package
+Nx ejecuta `nx run-many -t build` que compila los 3 paquetes en orden de dependencias: `utils` → `styles` → `react`.
+
+### Compilar un paquete individual
 
 ```bash
 npx nx run @ui-kit/react:vite:build
 npx nx run @ui-kit/utils:vite:build
 ```
 
-`@ui-kit/styles` requires no build step (it exports CSS directly).
+`@ui-kit/styles` no requiere compilación con Vite — concatena los CSS directamente.
 
-### Build output
+### Salida del build
 
-After `npm run build`, each package generates its `dist/`:
-
-```
+```text
 packages/react/dist/
-  index.js / index.cjs        # Barrel (all components)
-  index.d.ts                   # TypeScript types
-  button.js / button.cjs       # Subpath: @ui-kit/react/button
-  input.js / input.cjs         # Subpath: @ui-kit/react/input
-  textarea.js / textarea.cjs   # Subpath: @ui-kit/react/textarea
-  input-group.js / ...         # Subpath: @ui-kit/react/input-group
-  card.js / card.cjs           # Subpath: @ui-kit/react/card
-  modal.js / modal.cjs         # Subpath: @ui-kit/react/modal
-  badge.js / badge.cjs         # Subpath: @ui-kit/react/badge
+├── index.js / index.cjs              # Barrel (todos los componentes)
+├── index.d.ts                        # Tipos TypeScript
+├── button.js / button.cjs            # Subpath: @ui-kit/react/button
+├── input.js / input.cjs              # Subpath: @ui-kit/react/input
+├── textarea.js / textarea.cjs        # Subpath: @ui-kit/react/textarea
+├── input-group.js / input-group.cjs  # Subpath: @ui-kit/react/input-group
+├── card.js / card.cjs                # Subpath: @ui-kit/react/card
+├── modal.js / modal.cjs              # Subpath: @ui-kit/react/modal
+├── badge.js / badge.cjs              # Subpath: @ui-kit/react/badge
+├── date-picker-range.js / .cjs       # Subpath: @ui-kit/react/date-picker-range
+├── select.js / select.cjs            # Subpath: @ui-kit/react/select
+└── style.css                         # Estilos compilados de Tailwind
 
 packages/utils/dist/
-  utils.js / utils.cjs
-  index.d.ts
+├── utils.js / utils.cjs
+└── index.d.ts
+
+packages/styles/dist/
+└── index.css                         # Todos los design tokens concatenados
 ```
 
-## Usage
+Cada paquete genera **ES modules** (`.js`) y **CommonJS** (`.cjs`) con declaraciones TypeScript (`.d.ts`).
 
-### Styles
+### Usar en otro proyecto
+
+1. Instalar los paquetes (o hacer link local):
+
+```bash
+npm install @ui-kit/react @ui-kit/styles @ui-kit/utils
+```
+
+2. Importar los estilos en el CSS raíz del proyecto consumidor:
 
 ```css
-/* In your main CSS file */
-@import "@ui-kit/styles";
+@import "tailwindcss";
+@import "@ui-kit/styles/index.css";
 ```
 
-### Components
+3. Usar los componentes:
 
 ```tsx
-// Import from the barrel (tree-shakeable)
-import { Button, Input, Modal } from "@ui-kit/react";
+// Barrel import (tree-shakeable)
+import { Button, Input, Modal, Select } from "@ui-kit/react";
 
-// Or import via subpath (smaller bundle)
+// O subpath import (bundle más pequeño)
 import { Button } from "@ui-kit/react/button";
-import { Input } from "@ui-kit/react/input";
-import { Textarea } from "@ui-kit/react/textarea";
-import { InputGroup, InputPrefix } from "@ui-kit/react/input-group";
-import { Card, CardHeader, CardTitle } from "@ui-kit/react/card";
-import { Modal, ModalHeader, ModalBody } from "@ui-kit/react/modal";
-import { Badge } from "@ui-kit/react/badge";
+import { Select, SelectItem } from "@ui-kit/react/select";
+import { DatePickerRange } from "@ui-kit/react/date-picker-range";
 ```
 
-### Utilities
+4. Usar las utilidades:
 
 ```tsx
 import { cx } from "@ui-kit/utils";
 
-// cx resolves conflicting Tailwind classes
+// cx resuelve clases Tailwind conflictivas
 cx("px-4 py-2", "px-6"); // => "px-6 py-2"
 ```
 
-## Project structure
+## Desarrollo (watch mode)
 
-```
-ui-kit/
-  packages/
-    react/
-      src/
-        _shared/           # Shared styles and icons across components
-        button/            # Button, CloseButton
-        input/             # Input
-        textarea/          # Textarea
-        input-group/       # InputGroup, InputPrefix
-        card/              # Card, CardImage, CardHeader, ...
-        modal/             # Modal, ModalHeader, ModalIcon, ...
-        badge/             # Badge
-        index.ts           # Main barrel export
-      vite.config.ts
-      package.json
-    styles/
-      src/
-        index.css          # Imports all tokens
-        colors.css         # Color tokens (brand, error, gray, semantic)
-        typography.css     # Typography
-        shadows.css        # Shadows (xs to 3xl)
-        spacing.css        # Spacing
-      package.json
-    utils/
-      src/
-        cx.ts              # extendTailwindMerge + sortCx
-        index.ts
-      vite.config.ts
-      package.json
-  nx.json
-  package.json
+Para recompilar automáticamente al guardar cambios:
+
+```bash
+npx nx run @ui-kit/react:dev
+npx nx run @ui-kit/utils:dev
 ```
 
-## Component pattern
+## Lint y formato
 
-Every component follows the same structure:
-
+```bash
+npm run lint            # ESLint en todos los paquetes
+npm run format:check    # Verificar formato con Prettier
+npm run format          # Aplicar formato con Prettier
 ```
-component/
-  Component.tsx          # React component (forwardRef)
-  Component.styles.ts    # CVA variants with semantic tokens
-  Component.stories.tsx  # Storybook stories
-  Component.test.tsx     # Tests with @testing-library/react
-  index.ts               # Barrel exports
-```
-
-## Available components
-
-| Component | Variants | Sizes | Features |
-| --------- | -------- | ----- | -------- |
-| **Button** | primary, secondaryGray/Color, tertiaryGray/Color, linkGray/Color | sm, md, lg, xl, 2xl | destructive, loading, leadingIcon, trailingIcon, CloseButton |
-| **Input** | default, error, success | small, medium, large | icon, tooltip, shortcut, isRequired, helperText |
-| **Textarea** | default, error, success | small, medium, large | tooltip, isRequired, helperText, rows |
-| **InputGroup** | - | small, medium, large | prefix, leadingAddon, trailingAddon, label, hint |
-| **Card** | default, elevated, outline, ghost | default, sm | interactive, CardImage, CardHeader action slot |
-| **Modal** | - | sm, md, lg | ModalIcon (5 colors), closeOnOverlayClick, Escape, X button |
-| **Badge** | - | - | - |
-
-## Tech stack
-
-- **React 19** with `forwardRef`
-- **Tailwind CSS v4** with `@theme` directive (no tailwind.config.js)
-- **CVA** (class-variance-authority) for style variants
-- **tailwind-merge** (via `cx`) for resolving class conflicts
-- **Vite** for builds (ES + CJS)
-- **Storybook 8** for visual documentation
-- **Jest** + **@testing-library/react** for testing
-- **Nx** for monorepo orchestration

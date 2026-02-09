@@ -16,6 +16,9 @@ module.exports = {
     "^@ui-kit/utils$": "<rootDir>/../utils/src/index.ts",
     "^@ui-kit/styles(.*)$": "identity-obj-proxy",
   },
+  transformIgnorePatterns: [
+    "node_modules/(?!(react-day-picker|date-fns)/)",
+  ],
   setupFilesAfterEnv: ["<rootDir>/src/setup-tests.ts"],
   collectCoverageFrom: [
     "src/**/*.{ts,tsx}",

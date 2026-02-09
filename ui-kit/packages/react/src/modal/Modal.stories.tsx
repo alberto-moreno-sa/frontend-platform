@@ -63,9 +63,8 @@ const TrashIcon = (props: React.SVGProps<SVGSVGElement>) => (
 
 const ModalTrigger: React.FC<{
   label?: string;
-  size?: "sm" | "md" | "lg";
   children: (props: { open: boolean; setOpen: (v: boolean) => void }) => React.ReactNode;
-}> = ({ label = "Open Modal", size, children }) => {
+}> = ({ label = "Open Modal", children }) => {
   const [open, setOpen] = useState(false);
   return (
     <>

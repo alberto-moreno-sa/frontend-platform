@@ -47,6 +47,16 @@
       "types": "./dist/badge/index.d.ts",
       "import": "./dist/badge.js",
       "require": "./dist/badge.cjs"
+    },
+    "./date-picker-range": {
+      "types": "./dist/date-picker-range/index.d.ts",
+      "import": "./dist/date-picker-range.js",
+      "require": "./dist/date-picker-range.cjs"
+    },
+    "./select": {
+      "types": "./dist/select/index.d.ts",
+      "import": "./dist/select.js",
+      "require": "./dist/select.cjs"
     }
   },
   "typesVersions": {
@@ -71,6 +81,12 @@
       ],
       "badge": [
         "./dist/badge/index.d.ts"
+      ],
+      "date-picker-range": [
+        "./dist/date-picker-range/index.d.ts"
+      ],
+      "select": [
+        "./dist/select/index.d.ts"
       ]
     }
   },
@@ -95,7 +111,9 @@
   "dependencies": {
     "@ui-kit/styles": "*",
     "@ui-kit/utils": "*",
-    "class-variance-authority": "0.7.1"
+    "class-variance-authority": "0.7.1",
+    "date-fns": "^4.1.0",
+    "react-day-picker": "^9.13.1"
   },
   "devDependencies": {
     "@jest/globals": "29.7.0",
