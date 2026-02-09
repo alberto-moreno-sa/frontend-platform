@@ -12,6 +12,7 @@ export interface AppConfig {
   readonly kafkaGroupId: string;
   readonly authServiceUrl: string;
   readonly allowedOrigins: string[];
+  readonly logLevel: string;
 }
 
 export const loadConfig = (): AppConfig => ({
@@ -25,4 +26,5 @@ export const loadConfig = (): AppConfig => ({
   kafkaGroupId: process.env.KAFKA_GROUP_ID || 'tracking-consumer-group',
   authServiceUrl: process.env.AUTH_SERVICE_URL || 'http://localhost:3001',
   allowedOrigins: (process.env.ALLOWED_ORIGINS || 'http://localhost:3000').split(','),
+  logLevel: process.env.LOG_LEVEL || 'info',
 });

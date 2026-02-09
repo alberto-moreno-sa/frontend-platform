@@ -6,6 +6,9 @@ import { verifyPassword } from '@auth/domain/functions/verify-password.fn';
 import { AppError } from '@common/errors/app-error';
 import { ErrorCodes } from '@common/constants/error-codes';
 import { AppConfig } from '@config';
+import { logger } from '@common/logger';
+
+const log = logger.child({ component: 'DeleteAccount' });
 
 interface DeleteAccountDeps {
   readonly userRepo: UserRepositoryPort;
@@ -35,7 +38,7 @@ export const createDeleteAccountUseCase = (deps: DeleteAccountDeps) => ({
     await deps.blacklist.add(jti, deps.config.accessTokenTtl);
     await deps.sessionService.deleteAllByUserId(userId);
 
-    console.log(`[DeleteAccount] Account deleted for user: ${userId}`);
+    log.info({ userId }, 'Account deleted');
 
     return {
       success: true,

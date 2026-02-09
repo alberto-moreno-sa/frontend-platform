@@ -4,23 +4,38 @@
   "description": "Design tokens and theme for @ui-kit (Tailwind CSS v4)",
   "license": "MIT",
   "type": "module",
-  "style": "./src/index.css",
+  "style": "./dist/index.css",
   "exports": {
-    ".": "./src/index.css",
-    "./index.css": "./src/index.css",
-    "./css": "./src/index.css",
-    "./colors": "./src/colors.css",
-    "./typography": "./src/typography.css",
-    "./shadows": "./src/shadows.css",
-    "./spacing": "./src/spacing.css"
+    ".": {
+      "style": "./dist/index.css",
+      "default": "./dist/index.css"
+    },
+    "./index.css": "./dist/index.css",
+    "./css": "./dist/index.css",
+    "./colors": {
+      "style": "./src/colors.css",
+      "default": "./src/colors.css"
+    },
+    "./typography": {
+      "style": "./src/typography.css",
+      "default": "./src/typography.css"
+    },
+    "./shadows": {
+      "style": "./src/shadows.css",
+      "default": "./src/shadows.css"
+    },
+    "./spacing": {
+      "style": "./src/spacing.css",
+      "default": "./src/spacing.css"
+    }
   },
-  "files": ["src"],
+  "files": ["src", "dist"],
   "sideEffects": ["**/*.css"],
   "publishConfig": {
     "access": "public"
   },
   "scripts": {
-    "build": "echo 'No build step needed for styles'"
+    "build": "mkdir -p dist && cat src/colors.css src/typography.css src/shadows.css src/spacing.css > dist/index.css"
   },
   "peerDependencies": {
     "tailwindcss": "^4.0.0"

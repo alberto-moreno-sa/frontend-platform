@@ -2,6 +2,9 @@ import { TrackingEventEntity } from '@tracking/domain/entities/tracking-event.en
 import { EventBrokerPort } from '../ports/event-broker.port';
 import { TrackingRepositoryPort } from '../ports/tracking-repository.port';
 import { SSEEmitterPort } from '../ports/sse-emitter.port';
+import { logger } from '@common/logger';
+
+const log = logger.child({ component: 'ConsumeEvents' });
 
 interface ConsumeEventsDeps {
   readonly broker: EventBrokerPort;
@@ -21,14 +24,14 @@ export const createConsumeEventsUseCase = (deps: ConsumeEventsDeps) => {
       await deps.trackingRepo.save(event);
       deps.sseEmitter.emit(event);
     } catch (error) {
-      console.error('[ConsumeEvents] Failed to process event:', error);
+      log.error({ err: error }, 'Failed to process event');
     }
   };
 
   return {
     start: async (): Promise<void> => {
       await deps.broker.subscribe(deps.kafkaTopic, handleEvent);
-      console.log(`[ConsumeEvents] Subscribed to topic: ${deps.kafkaTopic}`);
+      log.info({ topic: deps.kafkaTopic }, 'Subscribed to topic');
     },
   };
 };

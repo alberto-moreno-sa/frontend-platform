@@ -1,6 +1,9 @@
 import { Kafka, Producer, Consumer } from 'kafkajs';
 import { EventBrokerPort } from '@tracking/application/ports/event-broker.port';
 import { TrackingEventEntity } from '@tracking/domain/entities/tracking-event.entity';
+import { logger } from '@common/logger';
+
+const log = logger.child({ component: 'KafkaBroker' });
 
 interface KafkaBrokerConfig {
   readonly brokers: string[];
@@ -28,7 +31,7 @@ export const createKafkaBrokerAdapter = (config: KafkaBrokerConfig): EventBroker
       consumer = kafka.consumer({ groupId: config.groupId });
       await producer.connect();
       await consumer.connect();
-      console.log('[KafkaBroker] Connected');
+      log.info('Connected');
     },
 
     publish: async (topic: string, event: TrackingEventEntity): Promise<void> => {
@@ -53,13 +56,13 @@ export const createKafkaBrokerAdapter = (config: KafkaBrokerConfig): EventBroker
           }
         },
       });
-      console.log(`[KafkaBroker] Subscribed to topic: ${topic}`);
+      log.debug({ topic }, 'Subscribed to topic');
     },
 
     disconnect: async (): Promise<void> => {
       if (producer) await producer.disconnect();
       if (consumer) await consumer.disconnect();
-      console.log('[KafkaBroker] Disconnected');
+      log.info('Disconnected');
     },
   };
 };

@@ -13,7 +13,10 @@ import { DeviceInfo } from '@auth/domain/value-objects/device-info.vo';
 import { AppError } from '@common/errors/app-error';
 import { ErrorCodes } from '@common/constants/error-codes';
 import { AppConfig } from '@config';
+import { logger } from '@common/logger';
 import { v4 as uuidv4 } from 'uuid';
+
+const log = logger.child({ component: 'LoginUser' });
 
 interface LoginUserDeps {
   readonly userRepo: UserRepositoryPort;
@@ -30,7 +33,7 @@ interface LoginUserDeps {
  */
 export const createLoginUserUseCase = (deps: LoginUserDeps) => ({
   async execute(email: string, password: string, device: DeviceInfo) {
-    console.log(`[LoginUser] Login attempt: ${email}`);
+    log.debug({ email }, 'Login attempt');
 
     const user = await deps.userRepo.findByEmail(email);
     if (!user) {
@@ -90,7 +93,7 @@ export const createLoginUserUseCase = (deps: LoginUserDeps) => ({
       rotationCount: '0',
     });
 
-    console.log(`[LoginUser] Login successful: ${user.id}`);
+    log.info({ userId: user.id }, 'Login successful');
 
     return {
       success: true,

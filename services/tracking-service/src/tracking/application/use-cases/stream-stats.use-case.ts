@@ -1,6 +1,9 @@
 import { Response } from 'express';
 import { TrackingRepositoryPort } from '../ports/tracking-repository.port';
 import { SSEEmitterPort } from '../ports/sse-emitter.port';
+import { logger } from '@common/logger';
+
+const log = logger.child({ component: 'StreamStats' });
 
 interface StreamStatsDeps {
   readonly trackingRepo: TrackingRepositoryPort;
@@ -27,7 +30,7 @@ export const createStreamStatsUseCase = (deps: StreamStatsDeps) => {
       const stats = await deps.trackingRepo.getAggregatedStats({});
       res.write(`data: ${JSON.stringify(stats)}\n\n`);
     } catch (error) {
-      console.error('[StreamStats] Failed to send initial snapshot:', error);
+      log.error({ err: error }, 'Failed to send initial snapshot');
     }
 
     // Register client for real-time updates

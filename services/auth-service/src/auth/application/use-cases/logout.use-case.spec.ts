@@ -38,6 +38,7 @@ const mockDeps = () => ({
     issuerUrl: 'https://auth.test',
     audience: 'test-api',
     allowedOrigins: [],
+    logLevel: 'info',
   },
 });
 

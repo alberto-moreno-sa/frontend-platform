@@ -1,5 +1,8 @@
 import mongoose from 'mongoose';
 import { AppConfig } from '@config';
+import { logger } from '@common/logger';
+
+const log = logger.child({ component: 'Container' });
 
 // Schemas
 import { createTrackingEventModel } from '@tracking/infrastructure/schemas/tracking-event.schema';
@@ -40,7 +43,7 @@ export interface AppContainer {
 export const createContainer = async (config: AppConfig): Promise<AppContainer> => {
   // Connect MongoDB
   await mongoose.connect(config.mongoUri);
-  console.log('[Container] MongoDB connected');
+  log.info('MongoDB connected');
 
   // Models
   const trackingEventModel = createTrackingEventModel();
@@ -56,7 +59,7 @@ export const createContainer = async (config: AppConfig): Promise<AppContainer> 
       : createInMemoryBrokerAdapter();
 
   await broker.connect();
-  console.log(`[Container] Broker connected (${config.brokerType})`);
+  log.info({ brokerType: config.brokerType }, 'Broker connected');
 
   const trackingRepo = createMongoTrackingRepository(trackingEventModel);
   const sseEmitter = createNodeSSEEmitterAdapter();
@@ -83,12 +86,12 @@ export const createContainer = async (config: AppConfig): Promise<AppContainer> 
 
   // Start consuming events
   await useCases.consumeEvents.start();
-  console.log('[Container] Event consumer started');
+  log.info('Event consumer started');
 
   const close = async (): Promise<void> => {
     await broker.disconnect();
     await mongoose.disconnect();
-    console.log('[Container] Connections closed');
+    log.info('Connections closed');
   };
 
   return { authMiddleware, sseEmitter, brokerType: config.brokerType, useCases, close };

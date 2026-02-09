@@ -12,6 +12,9 @@ import { isActiveUser } from '@auth/domain/entities/user.entity';
 import { AppError } from '@common/errors/app-error';
 import { ErrorCodes } from '@common/constants/error-codes';
 import { AppConfig } from '@config';
+import { logger } from '@common/logger';
+
+const log = logger.child({ component: 'RefreshToken' });
 
 interface RefreshTokenDeps {
   readonly tokenService: TokenServicePort;
@@ -46,7 +49,7 @@ export const createRefreshTokenUseCase = (deps: RefreshTokenDeps) => ({
 
     // Token family detection - check if already rotated (reuse attack)
     if (wasRotated(storedToken)) {
-      console.error(`[RefreshToken] Token reuse detected for user ${userId}, jti: ${jti}`);
+      log.warn({ userId, jti }, 'Token reuse detected — revoking entire token family');
       // Revoke entire token family
       const rootJti = storedToken.parentJti || storedToken.jti;
       const familyTokens = await deps.refreshTokenRepo.findByParentJtiChain(rootJti);
@@ -111,7 +114,7 @@ export const createRefreshTokenUseCase = (deps: RefreshTokenDeps) => ({
       });
     }
 
-    console.log(`[RefreshToken] Token refreshed for user ${userId}`);
+    log.info({ userId }, 'Token refreshed');
 
     return {
       success: true,

@@ -12,7 +12,10 @@ import { DeviceInfo } from '@auth/domain/value-objects/device-info.vo';
 import { AppError } from '@common/errors/app-error';
 import { ErrorCodes } from '@common/constants/error-codes';
 import { AppConfig } from '@config';
+import { logger } from '@common/logger';
 import { v4 as uuidv4 } from 'uuid';
+
+const log = logger.child({ component: 'RegisterUser' });
 
 interface RegisterUserDeps {
   readonly userRepo: UserRepositoryPort;
@@ -29,7 +32,7 @@ interface RegisterUserDeps {
  */
 export const createRegisterUserUseCase = (deps: RegisterUserDeps) => ({
   async execute(email: string, password: string, name: string, device: DeviceInfo) {
-    console.log(`[RegisterUser] Registering user: ${email}`);
+    log.debug({ email }, 'Registering user');
 
     const existing = await deps.userRepo.findByEmail(email);
     if (existing) {
@@ -81,7 +84,7 @@ export const createRegisterUserUseCase = (deps: RegisterUserDeps) => ({
       rotationCount: '0',
     });
 
-    console.log(`[RegisterUser] User registered: ${user.id}`);
+    log.info({ userId: user.id }, 'User registered');
 
     return {
       success: true,

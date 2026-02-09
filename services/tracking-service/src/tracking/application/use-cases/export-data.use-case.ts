@@ -3,6 +3,9 @@ import { TrackingEventEntity } from '@tracking/domain/entities/tracking-event.en
 import { toCsv } from '@common/mappers/to-csv';
 import { AppError } from '@common/errors/app-error';
 import { ErrorCodes } from '@common/constants/error-codes';
+import { logger } from '@common/logger';
+
+const log = logger.child({ component: 'ExportData' });
 
 interface ExportDataDeps {
   readonly trackingRepo: TrackingRepositoryPort;
@@ -42,7 +45,7 @@ export const createExportDataUseCase = (deps: ExportDataDeps) => {
       };
     } catch (error) {
       if (error instanceof AppError) throw error;
-      console.error('[ExportData] Failed to export:', error);
+      log.error({ err: error }, 'Failed to export');
       throw AppError.fromErrorCode(ErrorCodes.EXPORT_ERROR);
     }
   };

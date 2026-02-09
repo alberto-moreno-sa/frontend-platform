@@ -13,6 +13,7 @@ export interface AppConfig {
   readonly issuerUrl: string;
   readonly audience: string;
   readonly allowedOrigins: string[];
+  readonly logLevel: string;
 }
 
 export const loadConfig = (): AppConfig => ({
@@ -27,4 +28,5 @@ export const loadConfig = (): AppConfig => ({
   issuerUrl: process.env.ISSUER_URL || 'https://auth.yourapp.com',
   audience: process.env.AUDIENCE || 'yourapp-api',
   allowedOrigins: (process.env.ALLOWED_ORIGINS || 'http://localhost:3000').split(','),
+  logLevel: process.env.LOG_LEVEL || 'info',
 });

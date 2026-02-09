@@ -1,6 +1,9 @@
 import mongoose from 'mongoose';
 import Redis from 'ioredis';
 import { AppConfig } from '@config';
+import { logger } from '@common/logger';
+
+const log = logger.child({ component: 'Container' });
 
 // Schemas
 import { createUserModel } from '@auth/infrastructure/schemas/user.schema';
@@ -54,12 +57,12 @@ export interface AppContainer {
 export const createContainer = async (config: AppConfig): Promise<AppContainer> => {
   // Connect MongoDB
   await mongoose.connect(config.mongoUri);
-  console.log('[Container] MongoDB connected');
+  log.info('MongoDB connected');
 
   // Connect Redis
   const redis = new Redis(config.redisUri);
   await redis.ping();
-  console.log('[Container] Redis connected');
+  log.info('Redis connected');
 
   // Models
   const userModel = createUserModel();
@@ -77,7 +80,7 @@ export const createContainer = async (config: AppConfig): Promise<AppContainer> 
 
   // Initialize token service (generate key pair if needed)
   await tokenService.initialize();
-  console.log('[Container] Token service initialized');
+  log.info('Token service initialized');
 
   // Auth middleware
   const authMiddleware = createAuthMiddleware({ tokenService, blacklist, userRepo });
@@ -124,7 +127,7 @@ export const createContainer = async (config: AppConfig): Promise<AppContainer> 
   const close = async (): Promise<void> => {
     await mongoose.disconnect();
     redis.disconnect();
-    console.log('[Container] Connections closed');
+    log.info('Connections closed');
   };
 
   return { redis, authMiddleware, useCases, close };

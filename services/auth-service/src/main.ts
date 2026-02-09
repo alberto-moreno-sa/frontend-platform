@@ -1,31 +1,34 @@
 import { loadConfig } from '@config';
+import { logger } from '@common/logger';
 import { createContainer } from './container';
 import { createApp } from './app';
+
+const log = logger.child({ component: 'Main' });
 
 const bootstrap = async (): Promise<void> => {
   const config = loadConfig();
 
-  console.log(`[Main] Starting auth-service in ${config.nodeEnv} mode...`);
+  log.info({ env: config.nodeEnv }, 'Starting auth-service');
 
   const container = await createContainer(config);
   const app = createApp(config, container);
 
   const server = app.listen(config.port, () => {
-    console.log(`[Main] Auth service running on port ${config.port}`);
-    console.log(`[Main] Swagger UI: http://localhost:${config.port}/api/docs`);
-    console.log(`[Main] Health check: http://localhost:${config.port}/health`);
+    log.info({ port: config.port }, 'Auth service running');
+    log.debug({ swagger: `http://localhost:${config.port}/api/docs` }, 'Swagger UI available');
+    log.debug({ health: `http://localhost:${config.port}/health` }, 'Health check available');
   });
 
   const shutdown = async (signal: string): Promise<void> => {
-    console.log(`\n[Main] ${signal} received. Shutting down gracefully...`);
+    log.info({ signal }, 'Shutting down gracefully');
     server.close(async () => {
       await container.close();
-      console.log('[Main] Server closed.');
+      log.info('Server closed');
       process.exit(0);
     });
 
     setTimeout(() => {
-      console.error('[Main] Forced shutdown after timeout.');
+      log.warn('Forced shutdown after timeout');
       process.exit(1);
     }, 10000);
   };
@@ -35,6 +38,6 @@ const bootstrap = async (): Promise<void> => {
 };
 
 bootstrap().catch((error) => {
-  console.error('[Main] Failed to start:', error);
+  log.error({ err: error }, 'Failed to start');
   process.exit(1);
 });

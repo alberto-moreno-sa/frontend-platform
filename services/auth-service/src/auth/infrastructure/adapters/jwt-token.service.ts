@@ -11,6 +11,9 @@ import {
 } from '@auth/domain/functions/crypto-keys.fn';
 import { createKeyPair } from '@auth/domain/entities/key-pair.entity';
 import { AccessTokenPayload, RefreshTokenPayload } from '@auth/domain/functions/create-token.fn';
+import { logger } from '@common/logger';
+
+const log = logger.child({ component: 'JwtTokenService' });
 
 /**
  * JWT token service backed by ES256 key pairs stored in the repository.
@@ -25,9 +28,7 @@ export const createJwtTokenService = (
   const initialize = async (): Promise<void> => {
     const activeKey = await keyPairRepo.findActive();
     if (!activeKey) {
-      console.log(
-        '[JwtTokenService] No active key pair found. Generating initial ES256 key pair...',
-      );
+      log.info('No active key pair found, generating initial ES256 key pair');
       const generated = await generateES256KeyPair(config.jwtKid, config.keyEncryptionSecret);
       const keyPairData = createKeyPair({
         kid: generated.kid,
@@ -35,7 +36,7 @@ export const createJwtTokenService = (
         privateKeyEncrypted: generated.privateKeyEncrypted,
       });
       await keyPairRepo.create(keyPairData);
-      console.log(`[JwtTokenService] Initial key pair created with kid: ${config.jwtKid}`);
+      log.debug({ kid: config.jwtKid }, 'Initial key pair created');
     }
   };
 

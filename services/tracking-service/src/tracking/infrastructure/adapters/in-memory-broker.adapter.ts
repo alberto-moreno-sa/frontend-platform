@@ -1,6 +1,9 @@
 import { EventEmitter } from 'events';
 import { EventBrokerPort } from '@tracking/application/ports/event-broker.port';
 import { TrackingEventEntity } from '@tracking/domain/entities/tracking-event.entity';
+import { logger } from '@common/logger';
+
+const log = logger.child({ component: 'InMemoryBroker' });
 
 export const createInMemoryBrokerAdapter = (): EventBrokerPort => {
   const emitter = new EventEmitter();
@@ -8,7 +11,7 @@ export const createInMemoryBrokerAdapter = (): EventBrokerPort => {
 
   return {
     connect: async (): Promise<void> => {
-      console.log('[InMemoryBroker] Connected (EventEmitter)');
+      log.info('Connected (EventEmitter)');
     },
 
     publish: async (topic: string, event: TrackingEventEntity): Promise<void> => {
@@ -21,14 +24,14 @@ export const createInMemoryBrokerAdapter = (): EventBrokerPort => {
     ): Promise<void> => {
       emitter.on(topic, (event: TrackingEventEntity) => {
         handler(event).catch((err) =>
-          console.error('[InMemoryBroker] Handler error:', err),
+          log.error({ err }, 'Handler error'),
         );
       });
     },
 
     disconnect: async (): Promise<void> => {
       emitter.removeAllListeners();
-      console.log('[InMemoryBroker] Disconnected');
+      log.info('Disconnected');
     },
   };
 };

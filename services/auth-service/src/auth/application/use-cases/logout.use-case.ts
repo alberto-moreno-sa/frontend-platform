@@ -3,6 +3,9 @@ import { SessionPort } from '../ports/session.port';
 import { BlacklistPort } from '../ports/blacklist.port';
 import { AuthenticatedUser } from '@common/types';
 import { AppConfig } from '@config';
+import { logger } from '@common/logger';
+
+const log = logger.child({ component: 'Logout' });
 
 interface LogoutDeps {
   readonly refreshTokenRepo: RefreshTokenRepositoryPort;
@@ -33,7 +36,7 @@ export const createLogoutUseCase = (deps: LogoutDeps) => ({
       await deps.sessionService.delete(currentUser.userId, matchingSession.sessionId);
     }
 
-    console.log(`[Logout] User logged out: ${currentUser.userId}`);
+    log.info({ userId: currentUser.userId }, 'User logged out');
 
     return {
       success: true,

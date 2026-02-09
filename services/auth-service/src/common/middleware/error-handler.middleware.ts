@@ -1,6 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
 import { AppError } from '../errors/app-error';
 import { ErrorCodes } from '../constants/error-codes';
+import { logger } from '../logger';
+
+const log = logger.child({ component: 'ErrorHandler' });
 
 export const errorHandler = (
   error: unknown,
@@ -31,10 +34,7 @@ export const errorHandler = (
     return;
   }
 
-  console.error(
-    '[ErrorHandler] Unhandled exception:',
-    error instanceof Error ? error.stack : String(error),
-  );
+  log.error({ err: error instanceof Error ? error : new Error(String(error)) }, 'Unhandled exception');
 
   res.status(500).json({
     success: false,
