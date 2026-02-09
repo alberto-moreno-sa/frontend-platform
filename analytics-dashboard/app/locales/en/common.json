@@ -1,0 +1,132 @@
+{
+  "auth": {
+    "tabs": {
+      "login": "Log in",
+      "signup": "Sign up"
+    },
+    "login": {
+      "title": "Log in to your account",
+      "subtitle": "Welcome back! Please enter your details.",
+      "email": "Email",
+      "emailPlaceholder": "Enter your email",
+      "password": "Password",
+      "submit": "Sign in",
+      "submitting": "Signing in...",
+      "noAccount": "Don't have an account?",
+      "signupLink": "Sign up"
+    },
+    "register": {
+      "title": "Create an account",
+      "name": "Name",
+      "namePlaceholder": "Enter your name",
+      "email": "Email",
+      "emailPlaceholder": "Enter your email",
+      "password": "Password",
+      "passwordPlaceholder": "Create a password",
+      "passwordHint": "Must be at least 8 characters",
+      "submit": "Get started",
+      "submitting": "Creating account...",
+      "hasAccount": "Already have an account?",
+      "loginLink": "Log in"
+    },
+    "serverError": "An unexpected error occurred"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "subtitle": "Analytics content coming soon.",
+    "brand": "Analytics",
+    "nav": {
+      "dashboard": "Dashboard",
+      "components": "Components",
+      "button": "Button",
+      "input": "Input",
+      "textarea": "Textarea",
+      "inputGroup": "Input Group",
+      "card": "Card",
+      "modal": "Modal",
+      "badge": "Badge"
+    },
+    "welcome": "Welcome, {{name}}",
+    "logout": "Log out",
+    "loading": "Loading..."
+  },
+  "showcase": {
+    "variants": "Variants",
+    "sizes": "Sizes",
+    "states": "States",
+    "examples": "Examples",
+    "openModal": "Open Modal"
+  },
+  "analytics": {
+    "title": "Real-Time Statistics",
+    "subtitle": "Monitor component interactions and track usage in real time.",
+    "kpi": {
+      "totalInteractions": "Total Interactions",
+      "uniqueSessions": "Unique Sessions",
+      "last24h": "Last 24h",
+      "lastHour": "Last Hour",
+      "avgPerSession": "Avg / Session"
+    },
+    "charts": {
+      "timeline": "Interactions Timeline",
+      "timelineDesc": "Hourly interaction volume over the last 24 hours.",
+      "byComponent": "By Component",
+      "byComponentDesc": "Total interactions per UI component.",
+      "byAction": "By Action",
+      "byActionDesc": "Distribution of interaction types.",
+      "byDevice": "By Device",
+      "byDeviceDesc": "Breakdown by device type."
+    },
+    "table": {
+      "topInteractions": "Top Interactions",
+      "topInteractionsDesc": "Most frequent component + variant + action combinations.",
+      "component": "Component",
+      "variant": "Variant",
+      "action": "Action",
+      "page": "Page",
+      "count": "Count",
+      "noData": "No interactions recorded yet."
+    },
+    "feed": {
+      "title": "Live Activity",
+      "description": "Real-time interaction stream.",
+      "empty": "Waiting for interactions...",
+      "justNow": "just now"
+    },
+    "playground": {
+      "title": "Test Playground",
+      "description": "Interact with components below to generate tracking events in real time.",
+      "clickMe": "Click me",
+      "typeHere": "Type here...",
+      "sampleBadge": "Sample",
+      "modalTitle": "Sample Modal",
+      "modalDesc": "This modal was opened from the playground.",
+      "modalBody": "Every action here (open, close, cancel, confirm) generates a tracking event.",
+      "cancel": "Cancel",
+      "confirm": "Confirm"
+    },
+    "export": {
+      "button": "Export",
+      "title": "Export Data",
+      "description": "Choose format and date range for your export.",
+      "format": "Format",
+      "dateRange": "Date Range",
+      "cancel": "Cancel",
+      "download": "Download"
+    },
+    "counter": {
+      "live": "Live",
+      "disconnected": "Disconnected",
+      "total": "Total"
+    },
+    "device": {
+      "desktop": "Desktop",
+      "mobile": "Mobile",
+      "tablet": "Tablet"
+    }
+  },
+  "error": {
+    "generic": "Something went wrong",
+    "genericDetail": "An unexpected error occurred."
+  }
+}

@@ -7,6 +7,9 @@
 
 # Build artifacts
 **/dist
+!ui-kit/packages/styles/dist
+!ui-kit/packages/utils/dist
+!ui-kit/packages/react/dist
 **/build
 
 # Environment files

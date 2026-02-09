@@ -229,3 +229,48 @@ npm run lint:fix       # ESLint auto-fix
 npm run format         # Prettier
 npm run format:check   # Verificar formato
 ```
+
+## Troubleshooting
+
+### `TOKEN_INVALID` on `/api/components/export`
+
+**Symptom:** The `/api/components/export` endpoint returns:
+
+```json
+{ "error": { "code": "TOKEN_INVALID", "message": "Invalid token" } }
+```
+
+**Cause:** The tracking-service verifies JWTs by fetching the auth-service's JWKS endpoint (`/.well-known/jwks.json`). Inside a Docker container, `AUTH_SERVICE_URL` must point to the Docker network hostname (`auth-service`), not `localhost`. Since Docker Compose automatically reads the `.env` file in the service directory for variable substitution, a value like `AUTH_SERVICE_URL=http://localhost:3001` in `.env` will override any default set in `docker-compose.yml`, causing the container to try to reach `localhost:3001` (itself) instead of the auth-service container.
+
+**Fix:** In `docker-compose.yml`, hardcode the Docker network URL without variable substitution:
+
+```yaml
+# Wrong - .env value overrides the default
+- AUTH_SERVICE_URL=${AUTH_SERVICE_URL:-http://auth-service:3001}
+
+# Correct - always uses Docker network hostname
+- AUTH_SERVICE_URL=http://auth-service:3001
+```
+
+**Verify:** Check the resolved value inside the container:
+
+```bash
+docker exec tracking-service-tracking-service-1 printenv AUTH_SERVICE_URL
+# Expected: http://auth-service:3001
+```
+
+### `ECONNREFUSED` on startup
+
+**Symptom:** Logs show `connect ECONNREFUSED ::1:3001` or `127.0.0.1:3001`.
+
+**Cause:** Same root cause as above. The service is trying to reach the auth-service on localhost instead of the Docker network.
+
+**Fix:** Apply the same `AUTH_SERVICE_URL` fix described above.
+
+### Kafka `This server does not host this topic-partition`
+
+**Symptom:** The service crashes on startup with a KafkaJS error about topic-partitions.
+
+**Cause:** Kafka auto-creates topics on first use, but the topic metadata might not be available immediately after Kafka starts.
+
+**Fix:** The service has a built-in retry mechanism. If it fails on the first attempt, it will restart automatically (`restart: unless-stopped`) and succeed once Kafka has fully initialized. Ensure `KAFKA_AUTO_CREATE_TOPICS_ENABLE=true` is set on the Kafka container.

@@ -1,0 +1,22 @@
+services:
+  analytics-dashboard:
+    build:
+      context: ..
+      dockerfile: analytics-dashboard/Dockerfile
+    ports:
+      - "${ANALYTICS_PORT:-3000}:3000"
+    environment:
+      - NODE_ENV=${NODE_ENV:-development}
+      - AUTH_SERVICE_URL=http://auth-service:3001
+      - TRACKING_SERVICE_URL=http://tracking-service:3002
+      - TRACKING_SERVICE_PUBLIC_URL=http://localhost:${TRACKING_PORT:-3002}
+      - SESSION_SECRET=${SESSION_SECRET:-change-me-in-production}
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+    networks:
+      - default
+      - backend
+    restart: unless-stopped
+
+networks:
+  backend:
+    external: true

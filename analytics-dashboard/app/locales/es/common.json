@@ -1,0 +1,132 @@
+{
+  "auth": {
+    "tabs": {
+      "login": "Iniciar sesion",
+      "signup": "Registrarse"
+    },
+    "login": {
+      "title": "Inicia sesion en tu cuenta",
+      "subtitle": "Bienvenido de nuevo. Ingresa tus datos.",
+      "email": "Correo electronico",
+      "emailPlaceholder": "Ingresa tu correo",
+      "password": "Contrasena",
+      "submit": "Iniciar sesion",
+      "submitting": "Iniciando sesion...",
+      "noAccount": "No tienes una cuenta?",
+      "signupLink": "Registrate"
+    },
+    "register": {
+      "title": "Crea una cuenta",
+      "name": "Nombre",
+      "namePlaceholder": "Ingresa tu nombre",
+      "email": "Correo electronico",
+      "emailPlaceholder": "Ingresa tu correo",
+      "password": "Contrasena",
+      "passwordPlaceholder": "Crea una contrasena",
+      "passwordHint": "Debe tener al menos 8 caracteres",
+      "submit": "Comenzar",
+      "submitting": "Creando cuenta...",
+      "hasAccount": "Ya tienes una cuenta?",
+      "loginLink": "Inicia sesion"
+    },
+    "serverError": "Ocurrio un error inesperado"
+  },
+  "dashboard": {
+    "title": "Panel",
+    "subtitle": "El contenido de analiticas estara disponible pronto.",
+    "brand": "Analytics",
+    "nav": {
+      "dashboard": "Panel",
+      "components": "Componentes",
+      "button": "Boton",
+      "input": "Campo de texto",
+      "textarea": "Area de texto",
+      "inputGroup": "Grupo de campos",
+      "card": "Tarjeta",
+      "modal": "Modal",
+      "badge": "Etiqueta"
+    },
+    "welcome": "Bienvenido, {{name}}",
+    "logout": "Cerrar sesion",
+    "loading": "Cargando..."
+  },
+  "showcase": {
+    "variants": "Variantes",
+    "sizes": "Tamanos",
+    "states": "Estados",
+    "examples": "Ejemplos",
+    "openModal": "Abrir Modal"
+  },
+  "analytics": {
+    "title": "Estadisticas en Tiempo Real",
+    "subtitle": "Monitorea interacciones de componentes y rastrea el uso en tiempo real.",
+    "kpi": {
+      "totalInteractions": "Interacciones Totales",
+      "uniqueSessions": "Sesiones Unicas",
+      "last24h": "Ultimas 24h",
+      "lastHour": "Ultima Hora",
+      "avgPerSession": "Prom / Sesion"
+    },
+    "charts": {
+      "timeline": "Linea de Tiempo",
+      "timelineDesc": "Volumen de interacciones por hora en las ultimas 24 horas.",
+      "byComponent": "Por Componente",
+      "byComponentDesc": "Total de interacciones por componente de UI.",
+      "byAction": "Por Accion",
+      "byActionDesc": "Distribucion de tipos de interaccion.",
+      "byDevice": "Por Dispositivo",
+      "byDeviceDesc": "Desglose por tipo de dispositivo."
+    },
+    "table": {
+      "topInteractions": "Interacciones Principales",
+      "topInteractionsDesc": "Combinaciones mas frecuentes de componente + variante + accion.",
+      "component": "Componente",
+      "variant": "Variante",
+      "action": "Accion",
+      "page": "Pagina",
+      "count": "Cantidad",
+      "noData": "Aun no se han registrado interacciones."
+    },
+    "feed": {
+      "title": "Actividad en Vivo",
+      "description": "Transmision de interacciones en tiempo real.",
+      "empty": "Esperando interacciones...",
+      "justNow": "ahora"
+    },
+    "playground": {
+      "title": "Area de Pruebas",
+      "description": "Interactua con los componentes para generar eventos de seguimiento en tiempo real.",
+      "clickMe": "Haz clic",
+      "typeHere": "Escribe aqui...",
+      "sampleBadge": "Ejemplo",
+      "modalTitle": "Modal de Ejemplo",
+      "modalDesc": "Este modal fue abierto desde el area de pruebas.",
+      "modalBody": "Cada accion aqui (abrir, cerrar, cancelar, confirmar) genera un evento de seguimiento.",
+      "cancel": "Cancelar",
+      "confirm": "Confirmar"
+    },
+    "export": {
+      "button": "Exportar",
+      "title": "Exportar Datos",
+      "description": "Elige el formato y rango de fechas para tu exportacion.",
+      "format": "Formato",
+      "dateRange": "Rango de Fechas",
+      "cancel": "Cancelar",
+      "download": "Descargar"
+    },
+    "counter": {
+      "live": "En vivo",
+      "disconnected": "Desconectado",
+      "total": "Total"
+    },
+    "device": {
+      "desktop": "Escritorio",
+      "mobile": "Movil",
+      "tablet": "Tableta"
+    }
+  },
+  "error": {
+    "generic": "Algo salio mal",
+    "genericDetail": "Ocurrio un error inesperado."
+  }
+}

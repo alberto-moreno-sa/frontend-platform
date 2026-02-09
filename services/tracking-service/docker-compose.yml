@@ -12,7 +12,7 @@ services:
       - KAFKA_TOPIC=${KAFKA_TOPIC:-component.tracking}
       - KAFKA_CLIENT_ID=${KAFKA_CLIENT_ID:-tracking-service}
       - KAFKA_GROUP_ID=${KAFKA_GROUP_ID:-tracking-consumer-group}
-      - AUTH_SERVICE_URL=${AUTH_SERVICE_URL:-http://auth-service:3001}
+      - AUTH_SERVICE_URL=http://auth-service:3001
       - ALLOWED_ORIGINS=${ALLOWED_ORIGINS:-http://localhost:3000}
       - PORT=3002
       - NODE_ENV=development

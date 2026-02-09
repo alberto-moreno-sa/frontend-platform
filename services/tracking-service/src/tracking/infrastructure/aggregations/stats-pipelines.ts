@@ -23,7 +23,11 @@ const buildMatchStage = (filters: {
   if (filters.from || filters.to) {
     const timestampFilter: Record<string, Date> = {};
     if (filters.from) timestampFilter.$gte = filters.from;
-    if (filters.to) timestampFilter.$lte = filters.to;
+    if (filters.to) {
+      const endOfDay = new Date(filters.to);
+      endOfDay.setUTCHours(23, 59, 59, 999);
+      timestampFilter.$lte = endOfDay;
+    }
     match.timestamp = timestampFilter;
   }
 
