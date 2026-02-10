@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { Card, CardContent } from "@ui-kit/react";
+import { Card, CardContent } from "@ahiggs-ui/react";
 import type { StatsSummary } from "~/lib/tracking-types";
 
 function formatNumber(n: number): string {

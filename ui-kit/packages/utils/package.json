@@ -1,6 +1,6 @@
 {
-  "name": "@ui-kit/utils",
-  "version": "0.1.0",
+  "name": "@ahiggs-ui/utils",
+  "version": "0.2.0",
   "description": "Utility functions for @ui-kit (cx, sortCx)",
   "license": "MIT",
   "type": "module",
@@ -26,7 +26,8 @@
     "dev": "nx vite:build --watch",
     "lint": "eslint \"src/**/*.ts\"",
     "format": "prettier --write \"src/**/*.ts\"",
-    "format:check": "prettier --check \"src/**/*.ts\""
+    "format:check": "prettier --check \"src/**/*.ts\"",
+    "prepublishOnly": "npm run build"
   },
   "dependencies": {
     "tailwind-merge": "2.6.0"

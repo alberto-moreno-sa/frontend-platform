@@ -1,6 +1,6 @@
 import type { MetaFunction } from "react-router";
 import { useTranslation } from "react-i18next";
-import { InputGroup, InputPrefix, Input, Button } from "@ui-kit/react";
+import { InputGroup, InputPrefix, Input, Button } from "@ahiggs-ui/react";
 import { ShowcaseSection } from "~/components/showcase/ShowcaseSection";
 
 export const meta: MetaFunction = () => [{ title: "Input Group | Components" }];

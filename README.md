@@ -19,7 +19,7 @@ frontend-platform/
 
 | Module | Port | Technology |
 |--------|------|------------|
-| analytics-dashboard | 3000 | React Router v7, Tailwind CSS v4, @ui-kit |
+| analytics-dashboard | 3000 | React Router v7, Tailwind CSS v4, @ahiggs-ui (npm) |
 | auth-service | 3001 | Express 5, MongoDB, Redis, JWT ES256 |
 | tracking-service | 3002 | Express 5, MongoDB, Kafka/Memory, SSE |
 | ui-kit (Storybook) | 6006 | React 19, Tailwind v4, CVA, Nx |
@@ -88,7 +88,7 @@ Web application for visualizing UI component usage metrics. Includes authenticat
 #### Standalone Docker
 
 ```bash
-# From monorepo root (requires ui-kit to be built)
+# From monorepo root (packages @ahiggs-ui/* are pulled from npm)
 docker build -f analytics-dashboard/Dockerfile -t analytics-dashboard .
 docker run -p 3000:3000 \
   -e AUTH_SERVICE_URL=http://host.docker.internal:3001 \
@@ -102,7 +102,7 @@ docker run -p 3000:3000 \
 ```bash
 cd analytics-dashboard
 cp .env.example .env
-npm install
+npm install          # @ahiggs-ui/* packages from npm registry
 npm run dev
 ```
 
@@ -125,6 +125,7 @@ npm run dev
 | `npm run test` | Run tests with Jest |
 | `npm run lint` | Linting |
 | `npm run typecheck` | Type checking |
+| `npm run install:ui-kit` | Install @ahiggs-ui from local tarballs |
 
 ---
 
@@ -268,17 +269,17 @@ npm run start:dev       # http://localhost:3002
 
 ### ui-kit
 
-React component library with design tokens, utilities, and Storybook documentation. Managed as an Nx monorepo.
+React component library published to npm under the `@ahiggs-ui` organization. Managed as an Nx monorepo.
 
 **Tech stack:** React 19, Tailwind CSS v4, CVA (class-variance-authority), tailwind-merge, Vite 6, Storybook 8, Jest 30, Nx 22.
 
-#### Sub-packages
+#### Sub-packages (npm)
 
 | Package | Description |
 |---------|-------------|
-| `@ui-kit/react` | React components (Button, Input, Card, Modal, Select, DatePickerRange, etc.) |
-| `@ui-kit/styles` | CSS design tokens (colors, typography, shadows, spacing) |
-| `@ui-kit/utils` | `cx()` utility for Tailwind class merging |
+| `@ahiggs-ui/react` | React components (Button, Input, Card, Modal, Select, DatePickerRange, etc.) |
+| `@ahiggs-ui/styles` | CSS design tokens (colors, typography, shadows, spacing) |
+| `@ahiggs-ui/utils` | `cx()` utility for Tailwind class merging |
 
 #### Available components
 
@@ -297,8 +298,8 @@ React component library with design tokens, utilities, and Storybook documentati
 cd ui-kit
 npm install
 npm run build                              # Build all packages
-npx nx run @ui-kit/react:storybook         # Storybook at http://localhost:6006
-npm run test                               # All tests (235 tests)
+npx nx run @ahiggs-ui/react:storybook     # Storybook at http://localhost:6006
+npm test                                   # All tests (235 tests)
 npx nx test react --testPathPattern="Button"  # Single component tests
 ```
 
@@ -307,9 +308,13 @@ npx nx test react --testPathPattern="Button"  # Single component tests
 | Command | Description |
 |---------|-------------|
 | `npm run build` | Build all packages (Nx) |
+| `npm run clean` | Remove dist/ from all packages |
 | `npm run test` | Test all packages |
 | `npm run lint` | Lint all packages |
 | `npm run format` | Format with Prettier |
+| `npm run pack` | Build + generate .tgz tarballs |
+| `npm run release` | Version bump with conventional commits |
+| `npm run publish` | Publish packages to npm |
 
 ---
 

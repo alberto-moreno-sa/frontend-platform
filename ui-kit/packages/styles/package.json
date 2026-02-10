@@ -1,6 +1,6 @@
 {
-  "name": "@ui-kit/styles",
-  "version": "0.1.0",
+  "name": "@ahiggs-ui/styles",
+  "version": "0.2.0",
   "description": "Design tokens and theme for @ui-kit (Tailwind CSS v4)",
   "license": "MIT",
   "type": "module",
@@ -29,13 +29,19 @@
       "default": "./src/spacing.css"
     }
   },
-  "files": ["src", "dist"],
-  "sideEffects": ["**/*.css"],
+  "files": [
+    "src",
+    "dist"
+  ],
+  "sideEffects": [
+    "**/*.css"
+  ],
   "publishConfig": {
     "access": "public"
   },
   "scripts": {
-    "build": "mkdir -p dist && cat src/colors.css src/typography.css src/shadows.css src/spacing.css > dist/index.css"
+    "build": "mkdir -p dist && cat src/colors.css src/typography.css src/shadows.css src/spacing.css > dist/index.css",
+    "prepublishOnly": "npm run build"
   },
   "peerDependencies": {
     "tailwindcss": "^4.0.0"

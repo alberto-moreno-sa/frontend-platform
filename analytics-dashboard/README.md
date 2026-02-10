@@ -1,17 +1,16 @@
 # Analytics Dashboard
 
-Enterprise analytics dashboard built with React Router v7 (Remix), Tailwind CSS v4, and the `@ui-kit` component library.
+Enterprise analytics dashboard built with React Router v7 (Remix), Tailwind CSS v4, and the `@ahiggs-ui` component library.
 
 ## Requirements
 
 - **Node.js** >= 20
 - **npm** >= 10
 - **Docker** and **Docker Compose** (for backend services)
-- **@ui-kit** built (`ui-kit/` must have `dist/` generated)
 
 ## Project structure
 
-```
+```text
 app/
   routes/           # React Router v7 file-based routing
   services/         # BFF layer (server-side only) — auth, session, API clients
@@ -19,7 +18,7 @@ app/
   hooks/            # Custom React hooks
   stores/           # Zustand stores
   lib/              # Shared utilities (api-client, constants, validators, types)
-  styles/           # Tailwind CSS entry point + @ui-kit tokens
+  styles/           # Tailwind CSS entry point + @ahiggs-ui tokens
 ```
 
 ## Getting started
@@ -45,24 +44,14 @@ Verify the auth-service is running:
 curl http://localhost:3001/health
 ```
 
-### 2. Build @ui-kit
-
-The dashboard depends on `@ui-kit/react`, `@ui-kit/styles`, and `@ui-kit/utils` via `file:` references. The `react` and `utils` packages need their `dist/` folders:
-
-```bash
-cd ui-kit
-npm install
-npm run build
-```
-
-### 3. Install dashboard dependencies
+### 2. Install dashboard dependencies
 
 ```bash
 cd analytics-dashboard
 npm install
 ```
 
-### 4. Configure environment
+### 3. Configure environment
 
 ```bash
 cp .env.example .env
@@ -74,7 +63,7 @@ cp .env.example .env
 | `SESSION_SECRET` | — | Secret for encrypting session cookies (min 32 chars) |
 | `NODE_ENV` | `development` | Environment mode |
 
-### 5. Run development server
+### 4. Run development server
 
 ```bash
 npm run dev
@@ -95,6 +84,7 @@ Open <http://localhost:3000>. You will be redirected to `/login`.
 | `npm run test` | Run unit tests with Jest |
 | `npm run test:coverage` | Run tests with coverage report |
 | `npm run typecheck` | Run TypeScript type checking |
+| `npm run install:ui-kit` | Instalar paquetes `@ahiggs-ui` desde tarballs locales (desarrollo) |
 
 ## Docker
 
@@ -112,9 +102,21 @@ This starts all services: analytics-dashboard (3000), auth-service (3001), track
 ### Build image only
 
 ```bash
-# From monorepo root (build context needs access to ui-kit/)
+# From monorepo root
 docker build -f analytics-dashboard/Dockerfile -t analytics-dashboard .
 ```
+
+> Los paquetes `@ahiggs-ui/*` se instalan directamente desde el registry de npm durante `npm ci`, por lo que no es necesario copiar `ui-kit/` al contexto de Docker.
+
+## Desarrollo local con @ahiggs-ui
+
+Si necesitas probar cambios del `ui-kit` sin publicar a npm:
+
+```bash
+npm run install:ui-kit
+```
+
+Este script ejecuta `npm run pack` en `ui-kit/` y luego instala los tarballs generados. Los cambios se reflejan inmediatamente al reiniciar el dev server.
 
 ## Auth flow
 
@@ -131,8 +133,8 @@ The dashboard uses a **BFF (Backend for Frontend)** pattern:
 
 - **React Router v7** (framework mode, SSR)
 - **React 19**
-- **Tailwind CSS v4** with `@ui-kit/styles` design tokens
-- **@ui-kit/react** component library (Button, Input, Card, Modal, etc.)
+- **Tailwind CSS v4** with `@ahiggs-ui/styles` design tokens
+- **@ahiggs-ui/react** component library (Button, Input, Card, Modal, etc.)
 - **react-hook-form** + **zod** for form validation
 - **Vite 6** as bundler
 - **ESLint 9** + **Prettier**

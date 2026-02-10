@@ -1,6 +1,6 @@
 import * as React from "react";
 import type { VariantProps } from "class-variance-authority";
-import { cx } from "@ui-kit/utils";
+import { cx } from "@ahiggs-ui/utils";
 import {
   selectTriggerStyles,
   selectChevronStyles,
@@ -66,8 +66,7 @@ export interface SelectGroupProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
 }
 
-export interface SelectSeparatorProps
-  extends React.HTMLAttributes<HTMLHRElement> {}
+export type SelectSeparatorProps = React.HTMLAttributes<HTMLHRElement>;
 
 /* ========== Context ========== */
 

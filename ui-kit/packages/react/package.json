@@ -1,6 +1,6 @@
 {
-  "name": "@ui-kit/react",
-  "version": "0.1.0",
+  "name": "@ahiggs-ui/react",
+  "version": "0.2.0",
   "description": "React components for @ui-kit design system",
   "license": "MIT",
   "type": "module",
@@ -106,11 +106,17 @@
     "storybook": "nx serve:storybook -p 6006",
     "build-storybook": "nx build:storybook",
     "test": "nx jest:test",
-    "test:coverage": "nx jest:test --coverage"
+    "test:coverage": "nx jest:test --coverage",
+    "prepublishOnly": "npm run build"
+  },
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18",
+    "tailwindcss": ">=4"
   },
   "dependencies": {
-    "@ui-kit/styles": "*",
-    "@ui-kit/utils": "*",
+    "@ahiggs-ui/styles": "*",
+    "@ahiggs-ui/utils": "*",
     "class-variance-authority": "0.7.1",
     "date-fns": "^4.1.0",
     "react-day-picker": "^9.13.1"

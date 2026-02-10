@@ -1,15 +1,19 @@
 {
-  "name": "@ui-kit/root",
+  "name": "@ahiggs-ui/root",
   "private": true,
   "workspaces": [
     "packages/*"
   ],
   "scripts": {
     "build": "nx run-many -t build",
+    "clean": "rm -rf packages/*/dist",
     "test": "nx run-many -t test",
     "lint": "nx run-many -t lint",
     "format": "prettier --write \"packages/*/src/**/*.{ts,tsx,css}\"",
-    "format:check": "prettier --check \"packages/*/src/**/*.{ts,tsx,css}\""
+    "format:check": "prettier --check \"packages/*/src/**/*.{ts,tsx,css}\"",
+    "pack": "npm run build && rm -rf tarballs && mkdir tarballs && cd packages/styles && npm pack --pack-destination ../../tarballs && cd ../utils && npm pack --pack-destination ../../tarballs && cd ../react && npm pack --pack-destination ../../tarballs",
+    "release": "nx release",
+    "publish": "nx release publish"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.2",

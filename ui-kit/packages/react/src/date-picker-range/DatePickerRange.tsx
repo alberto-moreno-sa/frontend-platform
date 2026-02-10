@@ -2,7 +2,7 @@ import * as React from "react";
 import { DayPicker } from "react-day-picker";
 import type { DateRange, Matcher } from "react-day-picker";
 import { format, parse, isValid } from "date-fns";
-import { cx } from "@ui-kit/utils";
+import { cx } from "@ahiggs-ui/utils";
 import {
   datePickerTriggerStyles,
   datePickerTriggerIconStyles,
@@ -380,7 +380,7 @@ function CustomDayButton(
     modifiers: Record<string, boolean>;
   },
 ) {
-  const { children, day, modifiers, className, ...rest } = props;
+  const { children, day: _day, modifiers, className, ...rest } = props;
   const isToday = modifiers.today;
   const isSelected = modifiers.range_start || modifiers.range_end;
   const isInRange = modifiers.range_middle;

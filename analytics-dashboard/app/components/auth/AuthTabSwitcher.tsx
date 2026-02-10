@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router";
 import { useTranslation } from "react-i18next";
-import { cx } from "@ui-kit/utils";
+import { cx } from "@ahiggs-ui/utils";
 
 export function AuthTabSwitcher() {
   const { t } = useTranslation();

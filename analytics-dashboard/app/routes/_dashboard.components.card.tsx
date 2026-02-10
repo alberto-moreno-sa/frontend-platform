@@ -9,7 +9,7 @@ import {
   CardFooter,
   CardDivider,
   Button,
-} from "@ui-kit/react";
+} from "@ahiggs-ui/react";
 import { ShowcaseSection } from "~/components/showcase/ShowcaseSection";
 
 export const meta: MetaFunction = () => [{ title: "Card | Components" }];

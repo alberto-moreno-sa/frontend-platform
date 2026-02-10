@@ -1,6 +1,6 @@
 import type { MetaFunction } from "react-router";
 import { useTranslation } from "react-i18next";
-import { Button, CloseButton } from "@ui-kit/react";
+import { Button, CloseButton } from "@ahiggs-ui/react";
 import { ShowcaseSection } from "~/components/showcase/ShowcaseSection";
 
 const StarIcon = () => (

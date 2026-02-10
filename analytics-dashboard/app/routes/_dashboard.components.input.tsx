@@ -1,6 +1,6 @@
 import type { MetaFunction } from "react-router";
 import { useTranslation } from "react-i18next";
-import { Input } from "@ui-kit/react";
+import { Input } from "@ahiggs-ui/react";
 import { ShowcaseSection } from "~/components/showcase/ShowcaseSection";
 
 const SearchIcon = () => (

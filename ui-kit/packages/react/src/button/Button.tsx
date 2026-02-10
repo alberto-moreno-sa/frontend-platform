@@ -1,6 +1,6 @@
 import * as React from "react";
 import type { VariantProps } from "class-variance-authority";
-import { cx } from "@ui-kit/utils";
+import { cx } from "@ahiggs-ui/utils";
 import {
   buttonStyles,
   buttonIconStyles,

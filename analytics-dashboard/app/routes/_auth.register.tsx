@@ -3,7 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, Link, useActionData, useNavigation } from "react-router";
 import type { ActionFunctionArgs, MetaFunction } from "react-router";
 import { useTranslation } from "react-i18next";
-import { Button, Input } from "@ui-kit/react";
+import { Button, Input } from "@ahiggs-ui/react";
 import { AuthLogo } from "~/components/auth/AuthLogo";
 import { AuthTabSwitcher } from "~/components/auth/AuthTabSwitcher";
 import { registerFormSchema, type RegisterFormData } from "~/lib/validators";

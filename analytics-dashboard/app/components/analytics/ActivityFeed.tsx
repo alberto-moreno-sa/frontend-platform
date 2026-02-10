@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { Badge } from "@ui-kit/react";
+import { Badge } from "@ahiggs-ui/react";
 import { ChartCard } from "./ChartCard";
 import type { LiveInteractionEvent } from "~/lib/tracking-types";
 

@@ -19,9 +19,9 @@ Librería de componentes React basada en el design system Untitled UI. Monorepo 
 
 | Paquete | Descripción |
 | ------- | ----------- |
-| `@ui-kit/react` | Componentes React (Button, Input, Textarea, InputGroup, Card, Modal, Badge, DatePickerRange, Select) |
-| `@ui-kit/styles` | Design tokens CSS (colores, tipografía, sombras, espaciado) |
-| `@ui-kit/utils` | Utilidades (`cx` para merge de clases Tailwind) |
+| `@ahiggs-ui/react` | Componentes React (Button, Input, Textarea, InputGroup, Card, Modal, Badge, DatePickerRange, Select) |
+| `@ahiggs-ui/styles` | Design tokens CSS (colores, tipografía, sombras, espaciado) |
+| `@ahiggs-ui/utils` | Utilidades (`cx` para merge de clases Tailwind) |
 
 ## Arquitectura
 
@@ -105,13 +105,27 @@ cd ui-kit
 npm install
 ```
 
+## Scripts
+
+| Script | Descripción |
+| --- | --- |
+| `npm run build` | Compilar todos los paquetes (utils → styles → react) |
+| `npm run clean` | Eliminar `dist/` de todos los paquetes |
+| `npm test` | Ejecutar tests en todos los paquetes |
+| `npm run lint` | ESLint en todos los paquetes |
+| `npm run format` | Formatear con Prettier |
+| `npm run format:check` | Verificar formato sin modificar |
+| `npm run pack` | Build + generar tarballs `.tgz` en `tarballs/` |
+| `npm run release` | Versionado con conventional commits (NX release) |
+| `npm run publish` | Publicar paquetes a npm (`nx release publish`) |
+
 ## Storybook
 
 Storybook permite navegar, probar y documentar los componentes visualmente.
 
 ```bash
 # Desde la raíz del monorepo ui-kit
-npx nx run @ui-kit/react:storybook
+npx nx run @ahiggs-ui/react:storybook
 
 # O desde packages/react
 cd packages/react && npm run storybook
@@ -125,7 +139,7 @@ Abre `http://localhost:6006` en el navegador. Cada componente tiene stories con 
 # Todos los tests (235 tests)
 npm test
 
-# Solo @ui-kit/react
+# Solo @ahiggs-ui/react
 npx nx test react
 
 # Un componente específico
@@ -137,7 +151,7 @@ npx nx test react --testPathPattern="date-picker-range/DatePickerRange.test"
 npx nx test react --coverage
 ```
 
-## Build (compilar para usar en otros proyectos)
+## Build
 
 ### Compilar todos los paquetes
 
@@ -150,11 +164,11 @@ Nx ejecuta `nx run-many -t build` que compila los 3 paquetes en orden de depende
 ### Compilar un paquete individual
 
 ```bash
-npx nx run @ui-kit/react:vite:build
-npx nx run @ui-kit/utils:vite:build
+npx nx run @ahiggs-ui/react:vite:build
+npx nx run @ahiggs-ui/utils:vite:build
 ```
 
-`@ui-kit/styles` no requiere compilación con Vite — concatena los CSS directamente.
+`@ahiggs-ui/styles` no requiere compilación con Vite — concatena los CSS directamente.
 
 ### Salida del build
 
@@ -162,15 +176,15 @@ npx nx run @ui-kit/utils:vite:build
 packages/react/dist/
 ├── index.js / index.cjs              # Barrel (todos los componentes)
 ├── index.d.ts                        # Tipos TypeScript
-├── button.js / button.cjs            # Subpath: @ui-kit/react/button
-├── input.js / input.cjs              # Subpath: @ui-kit/react/input
-├── textarea.js / textarea.cjs        # Subpath: @ui-kit/react/textarea
-├── input-group.js / input-group.cjs  # Subpath: @ui-kit/react/input-group
-├── card.js / card.cjs                # Subpath: @ui-kit/react/card
-├── modal.js / modal.cjs              # Subpath: @ui-kit/react/modal
-├── badge.js / badge.cjs              # Subpath: @ui-kit/react/badge
-├── date-picker-range.js / .cjs       # Subpath: @ui-kit/react/date-picker-range
-├── select.js / select.cjs            # Subpath: @ui-kit/react/select
+├── button.js / button.cjs            # Subpath: @ahiggs-ui/react/button
+├── input.js / input.cjs              # Subpath: @ahiggs-ui/react/input
+├── textarea.js / textarea.cjs        # Subpath: @ahiggs-ui/react/textarea
+├── input-group.js / input-group.cjs  # Subpath: @ahiggs-ui/react/input-group
+├── card.js / card.cjs                # Subpath: @ahiggs-ui/react/card
+├── modal.js / modal.cjs              # Subpath: @ahiggs-ui/react/modal
+├── badge.js / badge.cjs              # Subpath: @ahiggs-ui/react/badge
+├── date-picker-range.js / .cjs       # Subpath: @ahiggs-ui/react/date-picker-range
+├── select.js / select.cjs            # Subpath: @ahiggs-ui/react/select
 └── style.css                         # Estilos compilados de Tailwind
 
 packages/utils/dist/
@@ -183,37 +197,86 @@ packages/styles/dist/
 
 Cada paquete genera **ES modules** (`.js`) y **CommonJS** (`.cjs`) con declaraciones TypeScript (`.d.ts`).
 
-### Usar en otro proyecto
+## Publicar a npm
 
-1. Instalar los paquetes (o hacer link local):
+Los paquetes se publican bajo la organización `@ahiggs-ui` en npm.
+
+### Requisitos
+
+- Cuenta de npm con acceso a la organización `@ahiggs-ui`
+- Autenticación: `npm login`
+
+### Primer release
 
 ```bash
-npm install @ui-kit/react @ui-kit/styles @ui-kit/utils
+npx nx release --first-release
+npm run publish
 ```
 
-2. Importar los estilos en el CSS raíz del proyecto consumidor:
+### Releases siguientes
+
+```bash
+npm run release    # Bump de versión con conventional commits
+npm run publish    # Publicar a npm
+```
+
+NX analiza los commits desde el último tag de git y determina el bump de versión (patch, minor, major) automáticamente.
+
+## Instalación local con tarballs
+
+Para probar cambios en un proyecto consumidor sin publicar a npm:
+
+```bash
+# Genera tarballs en ui-kit/tarballs/
+npm run pack
+
+# Desde el proyecto consumidor (ej. analytics-dashboard)
+npm install ../ui-kit/tarballs/ahiggs-ui-styles-*.tgz \
+            ../ui-kit/tarballs/ahiggs-ui-utils-*.tgz \
+            ../ui-kit/tarballs/ahiggs-ui-react-*.tgz
+```
+
+El `analytics-dashboard` incluye un script que automatiza esto:
+
+```bash
+cd analytics-dashboard
+npm run install:ui-kit
+```
+
+## Usar en otro proyecto
+
+1. Instalar los paquetes desde npm:
+
+```bash
+npm install @ahiggs-ui/react @ahiggs-ui/styles @ahiggs-ui/utils
+```
+
+2. Importar los estilos y escanear clases en el CSS raíz (Tailwind v4):
 
 ```css
 @import "tailwindcss";
-@import "@ui-kit/styles/index.css";
+@import "@ahiggs-ui/styles";
+@source "../../node_modules/@ahiggs-ui/react/dist/**/*.js";
 ```
+
+> **Nota:** La directiva `@source` es necesaria para que Tailwind v4 detecte las clases usadas en los componentes compilados.
 
 3. Usar los componentes:
 
 ```tsx
 // Barrel import (tree-shakeable)
-import { Button, Input, Modal, Select } from "@ui-kit/react";
+import { Button, Input, Modal, Select } from "@ahiggs-ui/react";
 
 // O subpath import (bundle más pequeño)
-import { Button } from "@ui-kit/react/button";
-import { Select, SelectItem } from "@ui-kit/react/select";
-import { DatePickerRange } from "@ui-kit/react/date-picker-range";
+import { Button } from "@ahiggs-ui/react/button";
+import { Select, SelectItem } from "@ahiggs-ui/react/select";
+import { DatePickerRange } from "@ahiggs-ui/react/date-picker-range";
 ```
 
 4. Usar las utilidades:
 
 ```tsx
-import { cx } from "@ui-kit/utils";
+import { cx } from "@ahiggs-ui/utils";
 
 // cx resuelve clases Tailwind conflictivas
 cx("px-4 py-2", "px-6"); // => "px-6 py-2"
@@ -224,8 +287,8 @@ cx("px-4 py-2", "px-6"); // => "px-6 py-2"
 Para recompilar automáticamente al guardar cambios:
 
 ```bash
-npx nx run @ui-kit/react:dev
-npx nx run @ui-kit/utils:dev
+npx nx run @ahiggs-ui/react:dev
+npx nx run @ahiggs-ui/utils:dev
 ```
 
 ## Lint y formato

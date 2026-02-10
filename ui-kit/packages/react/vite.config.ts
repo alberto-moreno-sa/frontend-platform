@@ -39,7 +39,7 @@ export default defineConfig({
         "react",
         "react-dom",
         "react/jsx-runtime",
-        "@ui-kit/utils",
+        "@ahiggs-ui/utils",
         "class-variance-authority",
       ],
       output: {

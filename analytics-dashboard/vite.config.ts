@@ -8,7 +8,6 @@ export default defineConfig({
   resolve: {
     alias: {
       "~": resolve(__dirname, "app"),
-      "@ui-kit/styles": resolve(__dirname, "../ui-kit/packages/styles/dist/index.css"),
     },
     dedupe: ["react", "react-dom", "react-router"],
   },

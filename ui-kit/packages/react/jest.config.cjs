@@ -13,8 +13,8 @@ module.exports = {
   },
   moduleNameMapper: {
     "\\.(css|less|scss)$": "identity-obj-proxy",
-    "^@ui-kit/utils$": "<rootDir>/../utils/src/index.ts",
-    "^@ui-kit/styles(.*)$": "identity-obj-proxy",
+    "^@ahiggs-ui/utils$": "<rootDir>/../utils/src/index.ts",
+    "^@ahiggs-ui/styles(.*)$": "identity-obj-proxy",
   },
   transformIgnorePatterns: [
     "node_modules/(?!(react-day-picker|date-fns)/)",

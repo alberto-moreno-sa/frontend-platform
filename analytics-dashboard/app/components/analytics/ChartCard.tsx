@@ -1,4 +1,4 @@
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@ui-kit/react";
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@ahiggs-ui/react";
 
 interface ChartCardProps {
   title: string;

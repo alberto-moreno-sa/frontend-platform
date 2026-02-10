@@ -11,7 +11,7 @@ import {
   ModalDescription,
   ModalBody,
   ModalFooter,
-} from "@ui-kit/react";
+} from "@ahiggs-ui/react";
 import { ChartCard } from "./ChartCard";
 
 interface TestPlaygroundProps {

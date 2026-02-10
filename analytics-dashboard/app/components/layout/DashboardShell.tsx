@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Form, useNavigation } from "react-router";
 import { useTranslation } from "react-i18next";
-import { Button } from "@ui-kit/react";
+import { Button } from "@ahiggs-ui/react";
 import { Sidebar } from "./Sidebar";
 import { Spinner } from "./Spinner";
 

@@ -1,6 +1,6 @@
 import type { MetaFunction } from "react-router";
 import { useTranslation } from "react-i18next";
-import { Badge } from "@ui-kit/react";
+import { Badge } from "@ahiggs-ui/react";
 import { ShowcaseSection } from "~/components/showcase/ShowcaseSection";
 
 export const meta: MetaFunction = () => [{ title: "Badge | Components" }];

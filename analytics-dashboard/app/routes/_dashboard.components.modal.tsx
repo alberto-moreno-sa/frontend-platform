@@ -11,7 +11,7 @@ import {
   ModalFooter,
   ModalDivider,
   Button,
-} from "@ui-kit/react";
+} from "@ahiggs-ui/react";
 import { ShowcaseSection } from "~/components/showcase/ShowcaseSection";
 
 const CheckIcon = () => (
